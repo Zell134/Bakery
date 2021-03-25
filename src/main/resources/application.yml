@@ -1,0 +1,14 @@
+spring:
+    h2:
+        :console:
+            enabled: true
+    datasource:
+        url: jdbc:h2:mem:testdb
+        initialization-mode: always
+    jpa:
+        hibernate:
+            ddl-auto: none
+        show-sql: true
+        
+bakery:
+    title: my bakery

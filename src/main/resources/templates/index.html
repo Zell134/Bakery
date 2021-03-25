@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
+</head>
+<body>
+    <h1>Welcome to...</h1>
+<img th:src="@{/img.jpg}"/>
+<br/>
+<a th:href="@{/login}">Login</a>
+</body>
+</html>
