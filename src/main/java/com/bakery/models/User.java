@@ -51,7 +51,7 @@ public class User implements UserDetails {
     @NotBlank(message = "Номер телефона обязателен для заполнения!")
     private String phone;
     
-    private boolean isActive;
+    private boolean active;
     
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -90,10 +90,10 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isActive;
+        return active;
     }
 
-    public User(String username, String password, String email, String street, String house, int apartment, String phone, boolean isActive, Set<Role> roles) {
+    public User(String username, String password, String email, String street, String house, int apartment, String phone, boolean active, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -101,7 +101,7 @@ public class User implements UserDetails {
         this.house = house;
         this.apartment = apartment;
         this.phone = phone;
-        this.isActive = isActive;
+        this.active = active;
         this.roles = roles;
     }   
 }

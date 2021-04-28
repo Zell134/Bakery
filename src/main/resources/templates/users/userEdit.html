@@ -9,49 +9,49 @@
     <body>
         <div th:insert="menu/topMenu.html"/>
         <div class="main center">
-            <div class="main center">
-                <h1>Профиль пользователя [[${user.getUsername()}]]</h1>
-                <img th:src="@{/img.jpg}"/>
+            <h1>Профиль пользователя</h1>
+            <img th:src="@{/img.jpeg}"/>
 
-                <form method="POST" th:action="@{/user}" th:object="${user}">
+            <form method="POST" th:action="@{/user}" th:object="${user}">
 
-                    <label for="id">ID </label>
-                    <input type="hidden" name="id" th:field="*{id}" th:text="${id}" disabled/>
-                    <input type="text" name="id" th:field="*{id}" th:text="${id}" disabled/><br/><br/>
+                <label for="id">ID </label>
+                <input type="hidden" name="id" th:field="*{id}" th:text="*{id}" />
+                <input type="text" name="id" th:field="*{id}" th:text="${id}" disabled/><br/><br/>
 
-                    <label for="username">ФИО: </label>
-                    <input type="text" name="username" th:field="*{username}" th:text="${username}"/>
-                    <span class="validationError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</span><br/><br/>
+                <label for="username">ФИО: </label>
+                <input type="text" name="username" th:field="*{username}" th:text="${username}"/>
+                <span class="validationError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</span><br/><br/>
 
-                    <label for="street">Улица: </label>
-                    <input type="text" name="street" th:field="*{street}" th:text="${street}"/>
-                    <span class="validationError" th:if="${#fields.hasErrors('street')}" th:errors="*{street}">Error</span><br/><br/>
+                <label for="street">Улица: </label>
+                <input type="text" name="street" th:field="*{street}" th:text="${street}"/>
+                <span class="validationError" th:if="${#fields.hasErrors('street')}" th:errors="*{street}">Error</span><br/><br/>
 
-                    <label for="house">Дом: </label>
-                    <input type="text" name="house" th:field="*{house}" th:text="${house}"/>
-                    <span class="validationError" th:if="${#fields.hasErrors('house')}" th:errors="*{house}">Error</span><br/><br/>
+                <label for="house">Дом: </label>
+                <input type="text" name="house" th:field="*{house}" th:text="${house}"/>
+                <span class="validationError" th:if="${#fields.hasErrors('house')}" th:errors="*{house}">Error</span><br/><br/>
 
-                    <label for="apartment">Квартира: </label>
-                    <input type="text" name="apartment" th:field="*{apartment}" th:text="${apartment}"/>
-                    <span class="validationError" th:if="${#fields.hasErrors('apartment')}" th:errors="*{apartment}">Error</span><br/><br/>
+                <label for="apartment">Квартира: </label>
+                <input type="text" name="apartment" th:field="*{apartment}" th:text="${apartment}"/>
+                <span class="validationError" th:if="${#fields.hasErrors('apartment')}" th:errors="*{apartment}">Error</span><br/><br/>
 
-                    <label for="phone">Телефон </label>
-                    <input type="text" name="phone" th:field="*{phone}" th:text="${phone}"/>
-                    <span class="validationError" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Error</span><br/><br/>
+                <label for="phone">Телефон </label>
+                <input type="text" name="phone" th:field="*{phone}" th:text="${phone}"/>
+                <span class="validationError" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Error</span><br/><br/>
 
-                    <label for="email">Email: </label>
-                    <input type="text" name="email" th:field="*{email}" th:text="${email}" disabled/><br/><br/>
+                <label for="email">Email: </label>
+                <input type="text" name="email" th:field="*{email}" th:text="${email}" disabled/><br/><br/>
 
-                    <label><input type="checkbox" name="isActive" th:checked="*{isActive}"/>Активен</label><br/><br/>
-                    <label>Роли:</label><br/>
-                    <div th:each="role : ${roles}">
-                        <input type="checkbox" th:field="*{roles}" th:value="${role}"/>
-                        <label th:for="${#ids.prev('roles')}" th:text="${role}"><label><br/>
-                    </div><br/>    
+                <input type="checkbox" th:field="*{active}" th:value="${active}"/>
+                <label th:for="${#ids.prev('active')}" th:text="Активно"></label><br/><br/>
 
-                    <input type="submit" value="Изменить"/>
-                </form>
-            </div>
+                <label>Роли:</label><br/>
+                <div th:each="role : ${roles}">
+                    <input type="checkbox" th:field="*{roles}" th:value="${role}"/>
+                    <label th:for="${#ids.prev('roles')}" th:text="${role}"><label><br/>
+                </div><br/>    
+
+                <input type="submit" value="Изменить"/>
+            </form>
         </div>
     </body>
 </html>

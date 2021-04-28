@@ -12,8 +12,9 @@
             <img th:src="@{/img.jpeg}"/>      
             <h1>Введите новый тип</h1>
             <form method="POST" th:object="${type}" th:action="@{/catalog/admin/types/addType}">
-                <input type="text" name="name" th:field="*{name}"/>
+                <input type="text" name="name" th:field="*{name}"/><br/><br/>
                 <input type="submit" value="Добавить"/>
+                <input type="button" onclick="document.location='/catalog/admin/types'" value="Назад"/>
             </form>
         </div>
     </body>

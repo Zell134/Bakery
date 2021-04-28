@@ -17,6 +17,8 @@
                     <tr>
                         <th>Имя</th>
                         <th>Роль</th>
+                        <th>Email</th>
+                        <th>Активен</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -24,11 +26,13 @@
                     <tr th:each="user : ${users}">
                         <td th:text="${user.getUsername()}"></td>
                         <td th:text="${user.getRoles()}"></td>
-                        <td><a th:href="@{/user/__${user.getId()}__}"/>Edit</td>
+                        <td th:text="${user.getEmail()}"></td>
+                        <td th:text="${user.isActive} ? Да : Нет"></td>
+                        <td><a class="regular-link" th:href="@{/user/__${user.getId()}__}"/>Edit</td>
                     </tr>
                 </tbody>
             </table>
-            <a href="/registration">Новый пользователь</a>
+            <a class="regular-link" href="/registration">Новый пользователь</a>
         </div>
     </body>
 </html>

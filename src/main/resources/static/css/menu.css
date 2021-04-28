@@ -38,7 +38,7 @@
     right: 50%;
     bottom: -5px;
     left: 50%;
-    background: #feb386;
+    background: #009879;
     transition: .8s;
 }
 .menu-main a:hover:before, .menu-main .current:before {left: 0;}

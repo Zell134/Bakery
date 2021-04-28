@@ -23,14 +23,14 @@
                     <div th:each="type : ${types}">
                         <tr class="typeName">
                             <td th:text="${type.getName()}"> type</td>
-                            <td><a th:href="@{/catalog/admin/types/deletType/__*{type.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
+                            <td><a class="regular-link" th:href="@{/catalog/admin/types/deletType/__*{type.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
                         </tr>
                     </div>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td><a href="/catalog/admin/types/addType">Добавить тип</a></td>
-                        <td><a href="/catalog/admin/edit">Редактор каталога</a></td>
+                        <td><a  class="regular-link" href="/catalog/admin/types/addType">Добавить тип</a></td>
+                        <td><a  class="regular-link" href="/catalog/admin/edit">Редактор каталога</a></td>
                     </tr>
                 </tfoot>
             </table>            
