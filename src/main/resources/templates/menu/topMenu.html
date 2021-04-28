@@ -7,5 +7,5 @@
     <li sec:authorize="!isAuthenticated()"><a href="/login">Войти</a></li>
     <li sec:authorize="isAuthenticated()"><a href="/logout">Выйти</a></li>
     <li sec:authorize="hasAuthority('ADMIN')"><a href="/user">Список пользователей</a></li>
-    <li sec:authorize="hasAuthority('ADMIN')"><a href="/catalog/edit">Редактор каталога</a></li>
+    <li sec:authorize="hasAuthority('ADMIN')"><a href="/catalog/admin/edit">Редактор каталога</a></li>
 </ul>

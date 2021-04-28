@@ -44,39 +44,55 @@ public class CatalogOfProductionController {
         return "/catalog/catalog";
     }
 
-    @GetMapping("/edit")
+    @GetMapping("/admin/edit")
     public String catalogEditList(Model model) {
         model = setModeltWithTypes(model);
         return "/catalog/catalogEditList";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/edit/{id}")
     public String productEdit(@PathVariable("id") Product product, Model model) {
         model.addAttribute("product", product);
         model.addAttribute("types", typeRepo.findAll());
         return "/catalog/productEdit";
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/admin/delete/{id}")
     public String delete(@PathVariable("id") Product product, Model model) {
         productRepo.delete(product);
         model = setModeltWithTypes(model);
         return "/catalog/catalogEditList";
     }
     
-    @GetMapping("/edit/deletType/{id}")
+    @GetMapping("/admin/types/deletType/{id}")
     public String deleteType(@PathVariable("id") Type type){
         typeRepo.delete(type);
-        return "redirect:/catalog/edit/types";
+        
+        boolean flag = true;
+        Type noneType = new Type();
+        noneType.setName("Неизвестный");
+        
+        for(Product prod : productRepo.findAll()){
+            if (prod.getType()==type.getId())
+                if(flag){
+                    noneType.setId(typeRepo.save(noneType).getId());
+                    prod.setType(noneType.getId());
+                    productRepo.save(prod);
+                    flag = false;
+                }else{
+                    prod.setType(noneType.getId());
+                }
+        }
+        return "redirect:/catalog/admin/types";
     }
     
-    @GetMapping("/edit/types")
+    @GetMapping("/admin/types")
     public String typeList(Model model){
         model.addAttribute("types", typeRepo.findAll());
         return "/catalog/typeList";
     }
 
-    @GetMapping("/edit/addType")
+    @GetMapping("/admin/types/addType")
     public String newType(@ModelAttribute("product") Product product, Model model) {
         Type type = new Type();
         System.out.println(product);
@@ -84,13 +100,13 @@ public class CatalogOfProductionController {
         return "/catalog/addNewType";
     }
 
-    @PostMapping("/edit/addType")
+    @PostMapping("/admin/types/addType")
     public String addNewType(@ModelAttribute("type") Type type) {
         typeRepo.save(type);
-        return "redirect:/catalog/edit/types";
+        return "redirect:/catalog/admin/types";
     }
 
-    @GetMapping("/edit/new")
+    @GetMapping("/admin/edit/new")
     public String productAdd(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
@@ -98,7 +114,7 @@ public class CatalogOfProductionController {
         return "/catalog/productEdit";
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/admin/edit")
     public String saveProduct(@ModelAttribute("product") @Valid Product product,
             BindingResult bindingResult,
             @RequestParam("file") MultipartFile file) throws IOException {
@@ -120,8 +136,8 @@ public class CatalogOfProductionController {
             product.setImageUrl(resultFileName);
             file.transferTo(new File(uploadDir.getAbsolutePath() + "/" + resultFileName));
         }
-        System.out.println(productRepo.save(product));
-        return "redirect:/catalog/edit";
+        productRepo.save(product);
+        return "redirect:/catalog/admin/edit";
     }
 
     private Model setModeltWithTypes(Model model) {
@@ -135,6 +151,7 @@ public class CatalogOfProductionController {
             model.addAttribute("Attr" + String.valueOf(type.getId()),
                     prodList.stream().filter(x -> x.getType() == type.getId()).collect(Collectors.toList()));
         }
+        
         model.addAttribute("types", typeList);
         return model;
 

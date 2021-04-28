@@ -36,15 +36,15 @@
                             <td th:text="${prod.name}"></td>
                             <td th:text="${prod.price}"></td>
                             <td th:text="${prod.active} ? 'Да' : 'Нет'"></td>
-                            <td><a th:href="@{/catalog/delete/__*{prod.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
-                            <td><a th:href="@{/catalog/edit/__${prod.getId()}__}"/>Редактировать</td>
+                            <td><a th:href="@{/catalog/admin/delete/__*{prod.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
+                            <td><a th:href="@{/catalog/admin/edit/__${prod.getId()}__}"/>Редактировать</td>
                         </tr>
                     </div>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td><a href="/catalog/edit/types">Типы продукции</a></td>
-                        <td><a href="/catalog/edit/new">Добавить продукт</a></td>
+                        <td><a href="/catalog/admin/types">Типы продукции</a></td>
+                        <td><a href="/catalog/admin/edit/new">Добавить продукт</a></td>
                     </tr>
                 </tfoot>
             </table>            

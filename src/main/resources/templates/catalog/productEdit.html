@@ -12,7 +12,7 @@
             <div class="main center">
                 <h1 th:if="${product.name}!=null" th:text="${product.name}"></h1></br>
 
-                <form method="POST" th:action="@{/catalog/edit}" th:object="${product}" enctype="multipart/form-data">
+                <form method="POST" th:action="@{/catalog/admin/edit}" th:object="${product}" enctype="multipart/form-data">
                     
                     <img class="catalog-image" id="image" th:src="@{/img/__*{imageUrl}__}" th:field="*{imageUrl}"/><br/> 
                     
