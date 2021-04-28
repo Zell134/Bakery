@@ -1,0 +1,8 @@
+<ul class="menu-main">
+  <li><a href="/">Главная</a></li>
+  <li><a href="/catalog">Каталог продукции</a></li>
+  <li><a href="">Корзина</a></li>
+  <li><a href="/login" >Войти</a></li>
+  <li><a href="">Контакты</a></li>
+  <li sec:authorize="isAuthenticated()"><h5 sec:authentication="name"/></li>
+</ul>

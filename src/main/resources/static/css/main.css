@@ -1,0 +1,16 @@
+body{
+    font-family: 'Ubuntu Condensed', sans-serif;
+    color: #606060;
+    padding-top: 40px;
+}
+
+textarea {
+    width: 90%;
+    height: 200px; 
+    resize: none; 
+}
+
+.catalog-image{
+    width: 20%;
+    heigth: 20%; 
+}

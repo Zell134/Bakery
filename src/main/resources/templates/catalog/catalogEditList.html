@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
+        <link th:href="@{/css/styledTable.css}" type="text/css" rel="stylesheet"/>    
+        <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+        <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
+    </head>
+    <body>
+        <div th:insert="menu/topMenu.html"/>
+        <div class="main center">
+            <h1>Список продукции</h1>   
+
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Цена</th>
+                        <th>В наличии</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div th:each="type : ${types}">
+                        <tr class="typeName">
+                            <td th:text="${type.getName()}"> type</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <tr th:each= "prod : ${Attr__${type.getId()}__}">
+                            <td th:text="${prod.name}"></td>
+                            <td th:text="${prod.price}"></td>
+                            <td th:text="${prod.active} ? 'Да' : 'Нет'"></td>
+                            <td><a th:href="@{/catalog/delete/__*{prod.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
+                            <td><a th:href="@{/catalog/edit/__${prod.getId()}__}"/>Редактировать</td>
+                        </tr>
+                    </div>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><a href="/catalog/edit/types">Типы продукции</a></td>
+                        <td><a href="/catalog/edit/new">Добавить продукт</a></td>
+                    </tr>
+                </tfoot>
+            </table>            
+
+        </div>
+    </body>
+</html>

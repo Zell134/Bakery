@@ -2,22 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
+        <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
+        <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
         <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
     </head>
     <body>
-        <h1>Login</h1>
-        <img th:src="@{/img.jpg}"/>
-        <div th:if="${error}">
-            Unable to login. Check your username and password.
+        <div th:insert="menu/topMenu.html"/>
+        <div class="main center">
+            <h1>Login</h1>
+            <img th:src="@{/img.jpeg}"/>
+            <div th:if="${param.error}">
+                Unable to login. Check your username and password.
+            </div>
+
+            <p>New here? Click <a th:href="@{/registration}">here</a> to register.</p>
+
+            <form method="POST" th:action="@{/login}" id="loginForm">
+                <label for="email">Email: </label>
+                <input type="text" name="email" id="email" /><br/>
+                <label for="password">Пароль </label>
+                <input type="password" name="password" id="password" /><br/>
+                <input type="submit" value="login"/>
+            </form>
         </div>
-        <p>New here? Click
-            <a th:href="@{/registration}">here</a> to register.</p>
-        <form method="POST" th:action="@{/login}" id="loginForm">
-            <label for="email">Email: </label>
-            <input type="text" name="email" id="email" /><br/>
-            <label for="password">Пароль </label>
-            <input type="password" name="password" id="password" /><br/>
-            <input type="submit" value="login"/>
-        </form>
     </body>
 </html>

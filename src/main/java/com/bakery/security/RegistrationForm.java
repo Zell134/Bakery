@@ -1,12 +1,21 @@
 package com.bakery.security;
 
+import com.bakery.models.Role;
 import com.bakery.models.User;
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegistrationForm {
 
     @NotBlank(message = "ФИО обязательно для заполнения!")
@@ -29,90 +38,14 @@ public class RegistrationForm {
     private String phone;
 
     public User toUser(PasswordEncoder passwordEncoder) {
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.USER);
         return new User(username,
                 passwordEncoder.encode(password),
                 email,
                 street,
                 house,
                 apartment,
-                phone);
-    }
-
-    public RegistrationForm() {
-    }
-    
-    public RegistrationForm(String username, String password, String confirm, String email, String street, String house, int apartment, String phone) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.street = street;
-        this.house = house;
-        this.apartment = apartment;
-        this.phone = phone;
-        this.confirm = confirm;            
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getHouse() {
-        return house;
-    }
-
-    public void setHouse(String house) {
-        this.house = house;
-    }
-
-    public int getApartment() {
-        return apartment;
-    }
-
-    public void setApartment(int apartment) {
-        this.apartment = apartment;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getConfirm() {
-        return confirm;
-    }
-
-    public void setConfirm(String confirm) {
-        this.confirm = confirm;
+                phone, true, roles);
     }
 }

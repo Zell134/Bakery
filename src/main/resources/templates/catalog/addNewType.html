@@ -8,11 +8,13 @@
     </head>
     <body>
         <div th:insert="menu/topMenu.html"/>
-        <div class="main center">
-            <div class="main center">
-                <br/><br/>
-                <img th:src="@{/img.jpeg}"/>
-                <br/>
-            </div>
+        <div class="main center">            
+            <img th:src="@{/img.jpeg}"/>      
+            <h1>Введите новый тип</h1>
+            <form method="POST" th:object="${type}" th:action="@{/catalog/edit/addType}">
+                <input type="text" name="name" th:field="*{name}"/>
+                <input type="submit" value="Добавить"/>
+            </form>
+        </div>
     </body>
 </html>

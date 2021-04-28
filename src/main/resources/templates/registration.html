@@ -2,37 +2,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title th:text = "${@environment.getProperty('bakery.title')}">title</title>
+        <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
+        <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+        <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
     </head>
     <body>
-        <h1>Регистрация</h1>
-        <img th:src="@{/img.jpg}"/>
-        <form method="POST" th:action="@{/registration}" id="registerForm" th:object="${form}">
-            <label for="username">ФИО: </label>
-            <input type="text" name="username" th:field="*{username}"/>
-            <span class="validationError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</span><br/>
-            <label for="password">Пароль: </label>
-            <input type="password" name="password" th:field="*{password}"/>
-            <span class="validationError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span><br/>
-            <label for="confirm">Повторите пароль: </label>
-            <input type="password" name="confirm" th:field="*{confirm}"/>
-            <span class="validationError" th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">Error</span><br/>
-            <label for="street">Улица: </label>
-            <input type="text" name="street" th:field="*{street}"/>
-            <span class="validationError" th:if="${#fields.hasErrors('street')}" th:errors="*{street}">Error</span><br/>
-            <label for="house">Дом: </label>
-            <input type="text" name="house" th:field="*{house}"/>
-            <span class="validationError" th:if="${#fields.hasErrors('house')}" th:errors="*{house}">Error</span><br/>
-            <label for="apartment">Квартира: </label>
-            <input type="text" name="apartment" th:field="*{apartment}"/>
-            <span class="validationError" th:if="${#fields.hasErrors('apartment')}" th:errors="*{apartment}">Error</span><br/>
-            <label for="phone">Телефон </label>
-            <input type="text" name="phone" th:field="*{phone}"/>
-            <span class="validationError" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Error</span><br/>
-            <label for="email">Email: </label>
-            <input type="text" name="email" th:field="*{email}"/>
-            <span class="validationError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</span><br/>
-            <input type="submit" value="Register"/>
-        </form>
+        <div th:insert="menu/topMenu.html"/>
+        <div class="main center">
+            <div class="main center">
+                <h1>Регистрация</h1>
+                <img th:src="@{/img.jpeg}"/>
+                <form method="POST" th:action="@{/registration}" id="registerForm" th:object="${form}">
+                    <label for="username">ФИО: </label>
+                    <input type="text" name="username" th:field="*{username}" th:text="${username}"/>
+                    <span class="validationError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</span><br/>
+                    <label for="password">Пароль: </label>
+                    <input type="password" name="password" th:field="*{password}"/>
+                    <span class="validationError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span><br/>
+                    <label for="confirm">Повторите пароль: </label>
+                    <input type="password" name="confirm" th:field="*{confirm}"/>
+                    <span class="validationError" th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">Error</span><br/>
+                    <label for="street">Улица: </label>
+                    <input type="text" name="street" th:field="*{street}" th:text="${street}"/>
+                    <span class="validationError" th:if="${#fields.hasErrors('street')}" th:errors="*{street}">Error</span><br/>
+                    <label for="house">Дом: </label>
+                    <input type="text" name="house" th:field="*{house}" th:text="${house}"/>
+                    <span class="validationError" th:if="${#fields.hasErrors('house')}" th:errors="*{house}">Error</span><br/>
+                    <label for="apartment">Квартира: </label>
+                    <input type="text" name="apartment" th:field="*{apartment}" th:text="${apartment}"/>
+                    <span class="validationError" th:if="${#fields.hasErrors('apartment')}" th:errors="*{apartment}">Error</span><br/>
+                    <label for="phone">Телефон </label>
+                    <input type="text" name="phone" th:field="*{phone}" th:text="${phone}"/>
+                    <span class="validationError" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Error</span><br/>
+                    <label for="email">Email: </label>
+                    <input type="text" name="email" th:field="*{email}" th:text="${email}"/>
+                    <span class="validationError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</span><br/>
+                    <input type="submit" value="Register"/>
+                </form>
+            </div>
     </body>
 </html>

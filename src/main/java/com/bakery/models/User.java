@@ -1,20 +1,33 @@
 package com.bakery.models;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Set;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
+@Table(name = "Users")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -37,10 +50,17 @@ public class User implements UserDetails {
     private int apartment;
     @NotBlank(message = "Номер телефона обязателен для заполнения!")
     private String phone;
+    
+    private boolean isActive;
+    
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        return getRoles();
     }
 
     @Override
@@ -70,10 +90,10 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 
-    public User(String username, String password, String email, String street, String house, int apartment, String phone) {
+    public User(String username, String password, String email, String street, String house, int apartment, String phone, boolean isActive, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -81,65 +101,7 @@ public class User implements UserDetails {
         this.house = house;
         this.apartment = apartment;
         this.phone = phone;
-    }
-
-    public User() {
-    }
-    
-    public long getId() {
-        return id;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getHouse() {
-        return house;
-    }
-
-    public int getApartment() {
-        return apartment;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public void setHouse(String house) {
-        this.house = house;
-    }
-
-    public void setApartment(int apartment) {
-        this.apartment = apartment;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
+        this.isActive = isActive;
+        this.roles = roles;
+    }   
 }
