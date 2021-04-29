@@ -8,9 +8,9 @@
 
 .styled-table thead tr {
     text-transform: uppercase;
-    background-color: #009879;
-    color: #ffffff;
-    text-align: left;
+    background-color: #f8f9fa;
+/*    color: #ffffff;*/
+    text-align: center;
 }
 
 .styled-table th,

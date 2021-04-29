@@ -4,48 +4,58 @@
     <head>
         <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
         <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+
+        <link th:insert="header.html"/>
+
         <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
     </head>
     <body>
         <div th:insert="menu/topMenu.html"/>
-        <div class="main center">
-            <div class="main center">
-                <h1 th:if="${product.name}!=null" th:text="${product.name}"></h1></br>
+        <div class="container">   
+            <h1 th:if="${product.name}!=null" th:text="${product.name}"></h1></br>
 
-                <form method="POST" th:action="@{/catalog/admin/edit}" th:object="${product}" enctype="multipart/form-data">
-                    
-                    <img class="catalog-image" id="image" th:src="@{/img/__*{imageUrl}__}" th:field="*{imageUrl}"/><br/> 
-                    
-                    <input type="hidden" name="id" th:field="*{id}"/>
-                    <input type="hidden" name="id" th:field="*{imageUrl}"/>
+            <form method="POST" th:action="@{/catalog/admin/edit}" th:object="${product}" enctype="multipart/form-data">
 
-                    <label for="name">Название:</label>
-                    <input type="text" name="name" th:field="*{name}" th:text="${name}"/>
-                    <span class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</span><br/><br/>
+                <img class="catalog-image" id="image" th:src="@{/img/__*{imageUrl}__}" th:field="*{imageUrl}"/><br/> 
 
-                    <textarea name="description" th:field="*{description}" th:text="*{description}"/>
-                    <span class="validationError" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error</span><br/><br/>
+                <input type="hidden" name="id" th:field="*{id}"/>
+                <input class="form-control" type="hidden" name="id" th:field="*{imageUrl}"/>
 
-                    <label for="price">Цена: </label>
-                    <input type="text" name="price" th:field="*{price}" th:text="${price}"/>
-                    <span class="validationError" th:if="${#fields.hasErrors('price')}" th:errors="*{product.price}">Error</span><br/><br/>
-                    
-                    <input type="checkbox" th:field="*{active}" th:value="${active}"/>                    
-                    <label th:for="${#ids.prev('active')}" th:text="Активно"></label><br/><br/>
+                <label class="form-label" for="name">Название:</label>
+                <input class="form-control" type="text" name="name" th:field="*{name}" th:text="${name}"/><br/>
+                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('name')}">
+                    <span th:errors="*{name}">Error</span><br/>
+                </div>
 
-                    <label>Тип:</label><br/>
-                    <div th:each="tp : ${types}">
-                        <input name="type" type="radio" th:field="*{type}" th:value="${tp.id}"/>
-                        <label th:text="${tp.name}"><label><br/>
-                    </div><br/>
-                    
-                    <input type="file" name="file" onchange="onFileSelected(event)"/><br/><br/>                    
-                        
-                    
-                    <input type="submit" value="Применить"/>
-                    <input type="button" onclick="document.location='/catalog/admin/edit'" value="Отмена"/><br/><br/> <br/><br/> 
-                </form>
-            </div>
+                <textarea class="form-control" name="description" th:field="*{description}" th:text="*{description}"/><br/>
+                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('description')}">
+                    <span th:errors="*{description}">Error</span><br/>
+                </div>
+
+                <label class="form-label" for="price">Цена: </label>
+                <input class="form-control" type="text" name="price" th:field="*{price}" th:text="${price}"/><br/>
+                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('price')}">
+                    <span th:errors="*{price}">Error</span><br/>
+                </div>
+
+                <input type="checkbox" th:field="*{active}" th:value="${active}"/>                    
+                <label class="form-label" th:for="${#ids.prev('active')}" th:text="Активно"></label><br/><br/>
+
+                <label class="form-label" >Тип:</label><br/>
+                <div th:each="tp : ${types}">
+                    <input name="type" type="radio" th:field="*{type}" th:value="${tp.id}"/>
+                    <label class="form-label" th:text="${tp.name}"></label><br/>
+                </div><br/>
+                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('type')}">
+                    <span th:errors="*{type}">Error</span><br/>
+                </div>
+
+                <input class="form-control" type="file" name="file" onchange="onFileSelected(event)"/><br/><br/>                    
+
+
+                <input class="btn btn-primary" type="submit" value="Применить"/>
+                <input class="btn btn-primary" type="button" onclick="document.location = '/catalog/admin/edit'" value="Отмена"/><br/><br/> <br/><br/> 
+            </form>
         </div>
         <script>
             function onFileSelected(event) {
@@ -55,12 +65,12 @@
                 var imgtag = document.getElementById("image");
                 imgtag.title = selectedFile.name;
 
-                reader.onload = function(event) {
+                reader.onload = function (event) {
                     imgtag.src = event.target.result;
                 };
 
                 reader.readAsDataURL(selectedFile);
             }
-            </script>
+        </script>
     </body>
 </html>

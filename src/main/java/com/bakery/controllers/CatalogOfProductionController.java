@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,35 +60,40 @@ public class CatalogOfProductionController {
 
     @GetMapping("/admin/delete/{id}")
     public String delete(@PathVariable("id") Product product, Model model) {
+        File uploadDir = new File(uploasPath);
+        File fl = new File(uploadDir.getAbsolutePath() + "/" + product.getImageUrl());
+        fl.delete();
+        
         productRepo.delete(product);
         model = setModeltWithTypes(model);
         return "/catalog/catalogEditList";
     }
-    
+
     @GetMapping("/admin/types/deletType/{id}")
-    public String deleteType(@PathVariable("id") Type type){
+    public String deleteType(@PathVariable("id") Type type) {
         typeRepo.delete(type);
-        
+
         boolean flag = true;
         Type noneType = new Type();
         noneType.setName("Неизвестный");
-        
-        for(Product prod : productRepo.findAll()){
-            if (prod.getType()==type.getId())
-                if(flag){
+
+        for (Product prod : productRepo.findAll()) {
+            if (prod.getType() == type.getId()) {
+                if (flag) {
                     noneType.setId(typeRepo.save(noneType).getId());
                     prod.setType(noneType.getId());
                     productRepo.save(prod);
                     flag = false;
-                }else{
+                } else {
                     prod.setType(noneType.getId());
                 }
+            }
         }
         return "redirect:/catalog/admin/types";
     }
-    
+
     @GetMapping("/admin/types")
-    public String typeList(Model model){
+    public String typeList(Model model) {
         model.addAttribute("types", typeRepo.findAll());
         return "/catalog/typeList";
     }
@@ -95,13 +101,15 @@ public class CatalogOfProductionController {
     @GetMapping("/admin/types/addType")
     public String newType(@ModelAttribute("product") Product product, Model model) {
         Type type = new Type();
-        System.out.println(product);
         model.addAttribute("type", type);
         return "/catalog/addNewType";
     }
 
     @PostMapping("/admin/types/addType")
-    public String addNewType(@ModelAttribute("type") Type type) {
+    public String addNewType(@ModelAttribute("type") @Valid Type type, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/catalog/addNewType";
+        }
         typeRepo.save(type);
         return "redirect:/catalog/admin/types";
     }
@@ -117,11 +125,16 @@ public class CatalogOfProductionController {
     @PostMapping("/admin/edit")
     public String saveProduct(@ModelAttribute("product") @Valid Product product,
             BindingResult bindingResult,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam("file") MultipartFile file, Model model) throws IOException {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("types", typeRepo.findAll());
             return "/catalog/productEdit";
         }
-
+        if (product.getType() == 0) {
+            bindingResult.addError(new FieldError("type", "type", "Выберите тип!"));
+            model.addAttribute("types", typeRepo.findAll());
+            return "/catalog/productEdit";
+        }
         if (!file.isEmpty()) {
             File uploadDir = new File(uploasPath);
             if (!uploadDir.exists()) {
@@ -151,7 +164,7 @@ public class CatalogOfProductionController {
             model.addAttribute("Attr" + String.valueOf(type.getId()),
                     prodList.stream().filter(x -> x.getType() == type.getId()).collect(Collectors.toList()));
         }
-        
+
         model.addAttribute("types", typeList);
         return model;
 

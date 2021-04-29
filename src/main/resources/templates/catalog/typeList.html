@@ -5,11 +5,14 @@
         <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
         <link th:href="@{/css/styledTable.css}" type="text/css" rel="stylesheet"/>    
         <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+        
+        <link th:insert="header.html"/>
+        
         <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
     </head>
     <body>
         <div th:insert="menu/topMenu.html"/>
-        <div class="main center">
+        <div class="container">   
             <h1>Список продукции</h1>   
 
             <table class="styled-table">
@@ -23,14 +26,14 @@
                     <div th:each="type : ${types}">
                         <tr class="typeName">
                             <td th:text="${type.getName()}"> type</td>
-                            <td><a class="regular-link" th:href="@{/catalog/admin/types/deletType/__*{type.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
+                            <td><a class="btn btn-primary" th:href="@{/catalog/admin/types/deletType/__*{type.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
                         </tr>
                     </div>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td><a  class="regular-link" href="/catalog/admin/types/addType">Добавить тип</a></td>
-                        <td><a  class="regular-link" href="/catalog/admin/edit">Редактор каталога</a></td>
+                        <td><a class="btn btn-primary" href="/catalog/admin/types/addType">Добавить тип</a></td>
+                        <td><a class="btn btn-primary" href="/catalog/admin/edit">Редактор каталога</a></td>
                     </tr>
                 </tfoot>
             </table>            

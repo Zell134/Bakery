@@ -5,11 +5,14 @@
         <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
         <link th:href="@{/css/styledTable.css}" type="text/css" rel="stylesheet"/>  
         <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+        
+        <link th:insert="header.html"/>
+        
         <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
     </head>
     <body>
         <div th:insert="menu/topMenu.html"/>
-        <div class="main center">
+        <div class="container">   
             <h1>Список ползователей</h1>
 
             <table class="styled-table">
@@ -28,11 +31,11 @@
                         <td th:text="${user.getRoles()}"></td>
                         <td th:text="${user.getEmail()}"></td>
                         <td th:text="${user.isActive} ? Да : Нет"></td>
-                        <td><a class="regular-link" th:href="@{/user/__${user.getId()}__}"/>Edit</td>
+                        <td><a class="btn btn-primary" th:href="@{/user/__${user.getId()}__}"/>Edit</td>
                     </tr>
                 </tbody>
             </table>
-            <a class="regular-link" href="/registration">Новый пользователь</a>
+            <a class="btn btn-primary" href="/registration">Новый пользователь</a>
         </div>
     </body>
 </html>
