@@ -8,5 +8,6 @@ public interface ProductionRepository extends CrudRepository<Product, Long>{
     
     Product findByName(String name);
     
-    List<Product> findByPriceBetween(String min, String max);   
+    List<Product> findByPriceBetween(String min, String max); 
+    List<Product> findByType(long type);
 }

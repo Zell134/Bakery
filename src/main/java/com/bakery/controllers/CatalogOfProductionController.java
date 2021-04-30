@@ -41,13 +41,21 @@ public class CatalogOfProductionController {
 
     @GetMapping()
     public String viewCatalog(Model model) {
-        model = setModeltWithTypes(model);
+        model.addAttribute("currentType", "Весь каталог");
+        model = setModeltWithTypes(model, -1);
+        return "/catalog/catalog";
+    }
+
+    @GetMapping("{id}")
+    public String viewCatalog(@PathVariable("id") Type type, Model model) {
+        model.addAttribute("currentType", type.getName());
+        model = setModeltWithTypes(model, type.getId());
         return "/catalog/catalog";
     }
 
     @GetMapping("/admin/edit")
     public String catalogEditList(Model model) {
-        model = setModeltWithTypes(model);
+        model = setModeltWithTypes(model, -1);
         return "/catalog/catalogEditList";
     }
 
@@ -63,9 +71,9 @@ public class CatalogOfProductionController {
         File uploadDir = new File(uploasPath);
         File fl = new File(uploadDir.getAbsolutePath() + "/" + product.getImageUrl());
         fl.delete();
-        
+
         productRepo.delete(product);
-        model = setModeltWithTypes(model);
+        model = setModeltWithTypes(model, -1);
         return "/catalog/catalogEditList";
     }
 
@@ -153,7 +161,7 @@ public class CatalogOfProductionController {
         return "redirect:/catalog/admin/edit";
     }
 
-    private Model setModeltWithTypes(Model model) {
+    private Model setModeltWithTypes(Model model, long selectedType) {
         List<Type> typeList = new ArrayList<>();
         List<Product> prodList = new ArrayList<>();
 
@@ -161,10 +169,14 @@ public class CatalogOfProductionController {
         typeRepo.findAll().forEach(i -> typeList.add(i));
 
         for (Type type : typeList) {
-            model.addAttribute("Attr" + String.valueOf(type.getId()),
-                    prodList.stream().filter(x -> x.getType() == type.getId()).collect(Collectors.toList()));
+            if (selectedType == -1) {
+                model.addAttribute("Attr" + String.valueOf(type.getId()),
+                        prodList.stream().filter(x -> x.getType() == type.getId()).collect(Collectors.toList()));
+            } else {
+                model.addAttribute("Attr" + String.valueOf(selectedType),
+                        prodList.stream().filter(x -> x.getType() == selectedType).collect(Collectors.toList()));
+            }
         }
-
         model.addAttribute("types", typeList);
         return model;
 

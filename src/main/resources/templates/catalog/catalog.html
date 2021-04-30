@@ -15,33 +15,48 @@
 
         <div class="container"> 
 
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    [[${currentType}]]
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="/catalog">Весь каталог</a></li>
+                    <div th:each="type : ${types}">
+                        <li><a class="dropdown-item" th:href="@{/catalog/__${type.id}__}">[[${type.name}]]</a></li>
+                    </div>
+                </ul>
+            </div>
+
             <h1>Каталог</h1>
             <div th:each="type : ${types}">
-                <h3 th:text="${type.name}"> type </h3>
 
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div th:if="${Attr__${type.id}__} != null">
 
+                    <h3 th:text="${type.name}"> type </h3>
 
-                    <div th:each= "product : ${Attr__${type.id}__}">
-                        <div th:if="${product.active}">
-                            <div class="col">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                        <div th:each= "product : ${Attr__${type.id}__}">
+
+                            <div th:if="${product.active}" class="col">
                                 <div class="card" style="width: 90%;">
                                     <div class="card-header">
                                         <p th:text="${product.name}"/>
                                     </div>
                                     
-                                    <img class="card-img-top" th:src="@{/img/__${product.imageUrl}__}"/>
+                                    <div th:if="${product.imageUrl != ''}">
+                                        <img  class="card-img-top" th:src="@{/img/__${product.imageUrl}__}"/>
+                                    </div>
                                     
                                     <p class="card-text" th:text="${product.description}"/>
-                                    
-                                     
+
+
 
                                     <div class="card-footer m-2">                  
                                         Цена <span th:text="${product.price} + ' руб.'"/>
                                     </div>
 
                                 </div>
-
                             </div>
                         </div>
                     </div>
