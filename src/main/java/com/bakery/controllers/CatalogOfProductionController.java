@@ -2,6 +2,7 @@ package com.bakery.controllers;
 
 import com.bakery.data.ProductionRepository;
 import com.bakery.data.TypeRepository;
+import com.bakery.models.Order;
 import com.bakery.models.Product;
 import com.bakery.models.Type;
 import java.io.File;
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/catalog")
+@SessionAttributes({"selectedTypeofProduction", "currentOrder"})
 public class CatalogOfProductionController {
 
     @Value("${upload.path}")
@@ -40,16 +43,33 @@ public class CatalogOfProductionController {
     }
 
     @GetMapping()
-    public String viewCatalog(Model model) {
+    public String viewAllCatalog(Model model) {
         model.addAttribute("currentType", "Весь каталог");
         model = setModeltWithTypes(model, -1);
+        model.addAttribute("selectedTypeofProduction", -1);
+        if (model.getAttribute("currentOrder") == null) {
+            model.addAttribute("currentOrder", new Order());
+        }
         return "/catalog/catalog";
     }
 
+    @GetMapping("/info/{id}")
+    public String showProductInfo(@PathVariable("id") Product product, Model model) {
+        model.addAttribute(product);
+        if (model.getAttribute("currentOrder") == null) {
+            model.addAttribute("currentOrder", new Order());
+        }
+        return "/info";
+    }
+
     @GetMapping("{id}")
-    public String viewCatalog(@PathVariable("id") Type type, Model model) {
+    public String viewSortedCatalog(@PathVariable("id") Type type, Model model) {
         model.addAttribute("currentType", type.getName());
         model = setModeltWithTypes(model, type.getId());
+        model.addAttribute("selectedTypeofProduction", type.getId());
+        if (model.getAttribute("currentOrder") == null) {
+            model.addAttribute("currentOrder", new Order());
+        }
         return "/catalog/catalog";
     }
 

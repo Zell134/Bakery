@@ -5,9 +5,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class CoreController {
-    
+
     @RequestMapping("/")
-    public String root(){
+    public String root() {
         return "index";
-    }    
+    }
+
+    @RequestMapping("/contacts")
+    public String contacts() {
+        return "index";
+    }
 }

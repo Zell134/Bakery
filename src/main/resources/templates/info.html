@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
+        <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+
+        <link th:insert="header.html"/>
+
+        <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
+    </head>
+    <body>
+        <div th:insert="menu/topMenu.html"/>
+        <div class="container mt-4"> 
+            <form method="POST" th:action="@{/order/__${product.id}__}">
+
+
+                <div th:if="${product.imageUrl != ''}">
+                    <img  class="rounded mx-auto d-block" th:src="@{/img/__${product.imageUrl}__}"/>
+                </div><br/><br/>
+
+                <div>
+                    <h2 class="text-left">[[${product.name}]]</h2>
+                </div>
+                <br/><br/>
+
+
+
+                <p class="fw-lighter" th:text="${product.description}"/>
+                <br/>
+
+
+
+                <div >                  
+                    Цена <span th:text="${product.price} + ' руб.'"/>
+                </div><br/><br/>
+
+                <label for="quanity">Количество </label>
+                <input class="form-control w-25 d-inline" type="text" name="quanity" id="quanity" value="1" />
+
+                <br/>
+                <br/>
+
+                <input class="btn btn-primary" type="submit" value="В корзину"/>
+                <input class="btn btn-primary" type="button" value="Назад" onclick="document.location = '/catalog'"/><br/><br/>
+                
+            </form>
+        </div>
+    </body>
+</html>
