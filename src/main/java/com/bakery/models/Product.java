@@ -1,5 +1,6 @@
 package com.bakery.models;
 
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Product {
     
     @NotNull(message = "Цена обязательна для заполнения!")
     @Min(value = 1, message = "Цена обязательна для заполнения!")
-    private float price;
+    private BigDecimal price;
     
     @NotNull(message = "В наличии?")
     private boolean active;
@@ -42,4 +43,8 @@ public class Product {
     private long type;
     
     private String imageUrl;
+    
+    public String getPrice(){
+        return String.valueOf(this.price);
+    }
 }

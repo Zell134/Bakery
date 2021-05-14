@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+
+        <link th:insert="header.html"/>
+
+        <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
+    </head>
+
+    <body>
+        <div th:insert="menu/topMenu.html"/>
+
+        <div class="container"> 
+
+            <h1>Подтверждение Заказа</h1>
+
+            <form method="POST" th:action="@{/order/OrdersList}">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Название</th>
+                            <th scope="col">Цена</th>
+                            <th scope="col">Количество</th>
+                            <th scope="col">Сумма</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each= "element : ${currentOrder.element}">
+                            <td><img th:src="@{/img/__*{element.product.imageUrl}__}" class="cart_product_img"></td>
+                            <td th:text="*{element.product.name}"></td>
+                            <td th:text="*{element.product.price}" th:id="|${element.product.id}price|"></td>
+                            <td><input type="text" th:value="${element.quantity}" th:onchange="|changePrice('${element.product.id}')|" th:name="${element.product.id}"></input></td>
+                            <td th:text="*{element.price}" th:id="|${element.product.id}fullprice|"></td>
+
+                            <td><a class="btn btn-primary" th:href="@{/order/deleteItem/__${element.product.id}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Адрес доставки</td>
+                            <td colspan="5"><input type="text" class="form-control" th:value="${currentOrder.destination}" name="destination"></input></td>
+                        </tr>
+                        <tr>
+                            <td>Пожелания</td>
+                            <td colspan="5"><input type="text" class="form-control" name="wishes"></input></td>
+                        </tr>
+                        <tr>
+
+                            <td><input class="btn btn-primary" type="submit" value="Подтвердить"/></td>
+                            <td><a class="btn btn-primary" href="/catalog">Назад в каталог</a></td>
+                            <td></td>
+                            <td></td>
+                            <td>Сумма</td>
+                            <input type="hidden" th:value="${currentOrder.fullPrice}" id="fullPriceForSend" name="fullPrice" ></input>
+                            <td id="fullPrice" name="fullPrice" th:text="|${currentOrder.fullPrice} руб.|">Сумма</td>
+                        </tr>
+                    </tfoot>
+                </table>          
+
+
+            </form>
+
+
+        </div>
+    </body>
+    <script>
+        function changePrice(id) {
+            var oldFullPriceOfElement = document.getElementById(id + 'fullprice').innerHTML;
+            var price = document.getElementById(id + 'price').innerHTML;
+            var fullPriceOnMenu = document.getElementById('fullpriceTop').innerHTML;
+            var finalPrice = parseFloat(fullPriceOnMenu) - parseFloat(oldFullPriceOfElement) + event.target.value * price;
+
+            document.getElementById(id + 'quantityTop').innerHTML = event.target.value + " руб.";
+            document.getElementById(id + 'fullprice').innerHTML = event.target.value * price + " руб.";
+            document.getElementById(id + 'priceTop').innerHTML = event.target.value * price + " руб.";
+            document.getElementById('fullpriceTop').innerHTML = finalPrice + " руб.";
+            document.getElementById('fullPrice').innerHTML = finalPrice + " руб.";
+            document.getElementById('fullPriceForSend').value = finalPrice;
+        }
+    </script>
+</html>

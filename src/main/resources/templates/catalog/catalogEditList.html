@@ -2,8 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-        <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
-        <link th:href="@{/css/styledTable.css}" type="text/css" rel="stylesheet"/>    
         <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
         
         <link th:insert="header.html"/>
@@ -13,16 +11,17 @@
     <body>
         <div th:insert="menu/topMenu.html"/>
         <div class="container">   
+            
             <h1>Список продукции</h1>   
 
-            <table class="styled-table">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>Имя</th>
-                        <th>Цена</th>
-                        <th>В наличии</th>
-                        <th></th>
-                        <th></th>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Цена</th>
+                        <th scope="col">В наличии</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>

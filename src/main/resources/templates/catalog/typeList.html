@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
-        <link th:href="@{/css/styledTable.css}" type="text/css" rel="stylesheet"/>    
+    <head>   
         <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
         
         <link th:insert="header.html"/>
@@ -15,11 +13,11 @@
         <div class="container">   
             <h1>Список продукции</h1>   
 
-            <table class="styled-table">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>Название</th>
-                        <th></th>
+                        <th scope="col">Название</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>

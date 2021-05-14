@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-        <link th:href="@{/css/menu.css}" type="text/css" rel="stylesheet"/>
         <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
 
         <link th:insert="header.html"/>
@@ -39,10 +38,12 @@
                         <div th:each= "product : ${Attr__${type.id}__}">
 
                             <div th:if="${product.active}" class="col">
-                                <div class="card" style="width: 90%;">
-                                    <a th:href="@{/catalog/info/__${product.id}__}" style="position: absolute; display: block; width: 100%; height: 100%;"></a>
+                                <div class="card product_card" style="width: 90%;">
+                                    
+                                    <a class="a-card" th:href="@{/catalog/info/__${product.id}__}"></a>
+                                    
                                     <div class="card-header">
-                                        <p th:text="${product.name}"/>
+                                        <p class="product_name" th:text="${product.name}"/>
                                     </div>
                                     
                                     <div th:if="${product.imageUrl != ''}">
@@ -54,7 +55,7 @@
 
 
                                     <div class="card-footer m-2">                  
-                                        Цена <span th:text="${product.price} + ' руб.'"/>
+                                        Цена <span class="cart_quantity" th:text="${product.price} + ' руб.'"/>
                                     </div>
 
                                 </div>
@@ -64,10 +65,5 @@
                 </div>    
             </div>            
         </div>
-        <script th:inline="javascript">
-            function onClick(url){
-                document.location = url;
-            }
-        </script>
     </body>
 </html>

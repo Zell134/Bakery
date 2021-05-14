@@ -59,7 +59,7 @@ public class CatalogOfProductionController {
         if (model.getAttribute("currentOrder") == null) {
             model.addAttribute("currentOrder", new Order());
         }
-        return "/info";
+        return "/order/info";
     }
 
     @GetMapping("{id}")
