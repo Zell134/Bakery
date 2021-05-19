@@ -6,6 +6,7 @@ import com.bakery.models.User;
 import com.bakery.service.OrderService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"selectedTypeofProduction", "currentOrder", "user"})
+@SessionAttributes({"selectedTypeofProduction", "currentOrder"})
 @RequestMapping("/order")
 public class OrderController {
     
@@ -37,10 +38,9 @@ public class OrderController {
     public String addInCart(@ModelAttribute("selectedTypeofProduction") Integer selectedTypeofProduction,
                             @PathVariable("id") Product product,
                             @ModelAttribute("quanity") int quanity,
+                            @AuthenticationPrincipal User user,
                             @ModelAttribute("currentOrder") Order order,
                             Model model) {
-
-        User user = (User) model.getAttribute("user");
 
         model.addAttribute("currentOrder", service.addElement(order, product, quanity, user));
 
@@ -71,23 +71,21 @@ public class OrderController {
     }
 
     @GetMapping("/ordersList")
-    public String ordersList(@ModelAttribute("user") User user, Model model) {
+    public String ordersList(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("orders", service.findUserOrders(user));
-        return "/order/ordersList";
+        return "/order/list";
     }
 
     @PostMapping("/ordersList")
     public String postOrdersList(@ModelAttribute("currentOrder") Order order,
             HttpServletRequest request,
             Model model) {
-
-        
-
-        model.addAttribute("orders", service.findUserOrders(order.getUser()));
+       
         service.saveOrder(order, request);
-        model.addAttribute("currentOrder", new Order());
+        model.addAttribute("orders", service.findUserOrders(order.getUser()));
+        model.addAttribute("currentOrder", new Order());         
 
-        return "/order/ordersList";
+        return "/order/list";
     }
 
 }

@@ -6,6 +6,7 @@ import com.bakery.models.RegistrationForm;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +25,8 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private MailSender mailSender;
+    @Value("${bakery.host}")
+    String host;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -47,8 +50,9 @@ public class UserService implements UserDetailsService {
 
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
-                    "Здравствуйте, %s! \n Для активации аккаунта пройдите, пожалуйста по ссылке: http://localhost:8080/registration/activate/%s",
+                    "Здравствуйте, %s! \n Для активации аккаунта пройдите, пожалуйста по ссылке: %s/registration/activate/%s",
                     user.getUsername(),
+                    host,
                     user.getActivationCode());
             mailSender.send(user.getEmail(), "Activation code", message);
         }
@@ -67,6 +71,16 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
 
         return true;
+    }
+
+    public void uppdateUser(User user, User changedUser) {
+        user.setUsername(changedUser.getUsername());
+        user.setStreet(changedUser.getStreet());
+        user.setHouse(changedUser.getHouse());
+        user.setApartment(changedUser.getApartment());
+        user.setPhone(changedUser.getPhone());
+        
+        userRepository.save(user);
     }
 
 }

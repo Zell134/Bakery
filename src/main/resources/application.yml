@@ -9,8 +9,8 @@ spring:
 #        url: jdbc:h2:mem:testdb
 #        initialization-mode: always
     jpa:
-#        hibernate:
-#            ddl-auto: none
+        hibernate:
+            ddl-auto: validate
         show-sql: true
         generate-ddl: true
     mail:
@@ -24,6 +24,7 @@ mail:
         
 bakery:
     title: my bakery
+    host: 192.168.34.63:8080
     
 upload:
     path: src/main/resources/static/img

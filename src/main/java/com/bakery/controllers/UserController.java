@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String saveUser(@ModelAttribute("user") @Valid User user,BindingResult bindingResult, Model model) {
+    public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", Role.values());
             return "/users/userEdit";
