@@ -15,14 +15,14 @@
             <h1>Login</h1>
             <img th:src="@{/img.jpeg}"/>
             <div th:if="${param.error}">
-                Unable to login. Check your username and password.
+                Невозможно войти. Проверьте email и пароль.
             </div>
 
-            <p>New here? Click <a th:href="@{/registration}">here</a> to register.</p>
+            <p>Новичек здесь? Нажмите <a th:href="@{/registration}">сюда</a> , чтобы зарегистрироваться.</p>
 
             <form method="POST" th:action="@{/login}" id="loginForm">
                 <label class="form-label" for="email">Email: </label>
-                <input class="form-control sm-1" type="text" name="email" id="email" /><br/>
+                <input class="form-control sm-1" type="text" name="email" id="email"/><br/>
                 
                 <label class="form-label" for="password">Пароль </label>
                 <input class="form-control" type="password" name="password" id="password" /><br/>

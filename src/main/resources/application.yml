@@ -13,9 +13,19 @@ spring:
 #            ddl-auto: none
         show-sql: true
         generate-ddl: true
+    mail:
+        host: smtp.mail.ru
+        username: mailzell@inbox.ru
+        password: ZellRus34
+        port: 465
+        protocol: smtps
+mail:
+    gebug: true
         
 bakery:
     title: my bakery
     
 upload:
     path: src/main/resources/static/img
+    
+    

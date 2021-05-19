@@ -21,7 +21,7 @@
                 <input class="form-control" type="hidden" name="id" th:field="*{imageUrl}"/>
 
                 <label class="form-label" for="name">Название:</label>
-                <input class="form-control" type="text" name="name" th:field="*{name}" th:text="${name}"/><br/>
+                <input class="form-control" type="text" name="name" th:field="*{name}" th:text="*{name}"/><br/>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('name')}">
                     <span th:errors="*{name}">Error</span><br/>
                 </div>
@@ -32,12 +32,9 @@
                 </div>
 
                 <label class="form-label" for="price">Цена: </label>
-                <input class="form-control" type="text" name="price" th:field="*{price}" th:text="${price}"/><br/>
-                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('price')}">
-                    <span th:errors="*{price}">Error</span><br/>
-                </div>
+                <input class="form-control" type="text" name="price" th:text="*{price}"/><br/>
 
-                <input type="checkbox" th:field="*{active}" th:value="${active}"/>                    
+                <input type="checkbox" th:field="*{active}" th:value="*{active}"/>                    
                 <label class="form-label" th:for="${#ids.prev('active')}" th:text="Активно"></label><br/><br/>
 
                 <label class="form-label" >Тип:</label><br/>

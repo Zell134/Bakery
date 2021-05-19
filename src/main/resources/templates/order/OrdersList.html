@@ -13,8 +13,26 @@
         <div th:insert="menu/topMenu.html"/>
 
         <div class="container"> 
-
-            <h1>Заказ оформлен.</h1></br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Номер</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Цена</th>
+                        <th scope="col">Место назначения</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr th:each= "order, iter : ${orders}">
+                            <td><a class="a-card" th:href="@{/order/info/__${order.id}__}">[[${iter.index + 1}]]</a></td>
+                            <td th:text="${#dates.format(order.orderDate, 'dd MMMMM yyyy HH:mm')}"></td>
+                            <td th:text="${order.fullPrice}"></td>
+                            <td th:text="${order.destination}"></td>
+                            <a class="a-card" th:href="@{/order/info/__${order.id}__}"></a>
+                        </tr>
+                </tbody>
+            </table>
+            
             <a class="btn btn-primary" href="/catalog">Назад в каталог</a>
         </div>
     </body>

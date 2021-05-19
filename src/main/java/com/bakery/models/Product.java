@@ -12,39 +12,46 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "Production")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class Product {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
+
     @NotBlank(message = "Название обязательно для заполнения!")
     private String name;
-    
+
     @Column(length = 2048)
     @NotBlank(message = "Описание обязательно для заполнения!")
     private String description;
-    
+
     @NotNull(message = "Цена обязательна для заполнения!")
-    @Min(value = 1, message = "Цена обязательна для заполнения!")
     private BigDecimal price;
-    
+
     @NotNull(message = "В наличии?")
     private boolean active;
-    
+
     @NotNull(message = "Выберите тип продукции!")
     private long type;
-    
+
     private String imageUrl;
-    
-    public String getPrice(){
+
+    public String getPrice() {
         return String.valueOf(this.price);
     }
+
+    public Product() {
+        this.name = "";
+        this.description = "";
+        this.price = new BigDecimal("0");
+        this.active = true;
+        this.type = 0;
+        this.imageUrl = "";
+    }
+
 }

@@ -1,15 +1,9 @@
 package com.bakery.controllers;
 
-import com.bakery.data.OrderElementRepository;
-import com.bakery.data.OrderRepository;
 import com.bakery.models.Order;
-import com.bakery.models.OrderElement;
 import com.bakery.models.Product;
 import com.bakery.models.User;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.bakery.service.OrderService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -26,38 +19,30 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes({"selectedTypeofProduction", "currentOrder", "user"})
 @RequestMapping("/order")
 public class OrderController {
-
-    private final OrderRepository orderRepo;
-    private final OrderElementRepository orderElemRepo;
+    
+    OrderService service;
 
     @Autowired
-    public OrderController(OrderRepository orderRepo, OrderElementRepository orderElemRepo) {
-        this.orderRepo = orderRepo;
-        this.orderElemRepo = orderElemRepo;
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
+    
+    @GetMapping("/info/{id}")
+    public String orderInfo(@PathVariable("id") Order order, Model model){
+        model.addAttribute("order", order);
+        return "/order/orderInfo";
     }
 
     @PostMapping("{id}")
     public String addInCart(@ModelAttribute("selectedTypeofProduction") Integer selectedTypeofProduction,
-            @PathVariable("id") Product product,
-            @ModelAttribute("quanity") int quanity,
-            @ModelAttribute("currentOrder") Order order,
-            Model model) {
+                            @PathVariable("id") Product product,
+                            @ModelAttribute("quanity") int quanity,
+                            @ModelAttribute("currentOrder") Order order,
+                            Model model) {
 
-        OrderElement element = new OrderElement(product, quanity);
         User user = (User) model.getAttribute("user");
 
-        if (order.getOrderDate() == null) {
-            order.setOrderDate(new Date());
-        }
-        if (order.getUser() == null || user != null) {
-            order.setUser(user);
-            String Address = user.getStreet() + ", д. " + user.getHouse() + ", кв. " + user.getApartment();
-            order.setDestination(Address);
-        }
-
-        order.addElement(element);
-
-        model.addAttribute("currentOrder", order);
+        model.addAttribute("currentOrder", service.addElement(order, product, quanity, user));
 
         if (selectedTypeofProduction < 0 || selectedTypeofProduction == null) {
             return "redirect:/catalog";
@@ -73,41 +58,36 @@ public class OrderController {
 
     @GetMapping("/deleteItem/{id}")
     public String deleteFromCart(@PathVariable("id") Product product,
-            @ModelAttribute("currentOrder") Order order,
-            Model model) {
-        order.deleteElement(product);
+                                @ModelAttribute("currentOrder") Order order,
+                                Model model) {
+        
+        service.deleteElement(order, product);
         model.addAttribute("currentOrder", order);
         if (order.getElement().isEmpty()) {
             return "redirect:/catalog";
         } else {
-            return "/order/OrdersList";
+            return "/order/confirmOrder";
         }
     }
 
-    @PostMapping("/OrdersList")
-    public String ordersList(@ModelAttribute("currentOrder") Order order,
+    @GetMapping("/ordersList")
+    public String ordersList(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("orders", service.findUserOrders(user));
+        return "/order/ordersList";
+    }
+
+    @PostMapping("/ordersList")
+    public String postOrdersList(@ModelAttribute("currentOrder") Order order,
             HttpServletRequest request,
             Model model) {
 
-        Map<String, String[]> parameterMap = request.getParameterMap();
-        List<OrderElement> orderElements = order.getElement();
-
-        for (String key : parameterMap.keySet()) {
-            if (!key.equals("_csrf") && !key.equals("destination") && !key.equals("wishes") && !key.equals("fullPrice")) {
-                OrderElement element = (OrderElement) orderElements.stream().filter(e -> e.getProduct().getId() == Long.valueOf(key)).findFirst().get();
-                element.setQuantity(Integer.valueOf(parameterMap.get(key)[0]));
-                orderElemRepo.save(element);
-            }
-        }
-        order.setFullPrice(parameterMap.get("fullPrice")[0]);
-        order.setDestination(parameterMap.get("destination")[0]);
-        order.setWishes(parameterMap.get("wishes")[0]);
         
 
-        orderRepo.save(order);
+        model.addAttribute("orders", service.findUserOrders(order.getUser()));
+        service.saveOrder(order, request);
         model.addAttribute("currentOrder", new Order());
 
-        return "/order/OrdersList";
+        return "/order/ordersList";
     }
 
 }

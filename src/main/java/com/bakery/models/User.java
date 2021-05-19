@@ -41,6 +41,7 @@ public class User implements UserDetails {
     @NotBlank(message = "Email обязателен для заполнения!")
     @Email(message = "Не корректный формат электронной почты!")
     private String email;
+    private String activationCode;
     @NotBlank(message = "Улица обязателена для заполнения!")
     private String street;
     @NotBlank(message = "Дом обязателен для заполнения!")
@@ -93,7 +94,7 @@ public class User implements UserDetails {
         return active;
     }
 
-    public User(String username, String password, String email, String street, String house, int apartment, String phone, boolean active, Set<Role> roles) {
+    public User(String username, String password, String email,String street, String house, int apartment, String phone, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -101,7 +102,6 @@ public class User implements UserDetails {
         this.house = house;
         this.apartment = apartment;
         this.phone = phone;
-        this.active = active;
         this.roles = roles;
     }   
 }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+
+        <link th:insert="header.html"/>
+
+        <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
+    </head>
+
+    <body>
+        <div th:insert="menu/topMenu.html"/>
+
+        <div class="container"> 
+            <h1>Заказа № [[${order.id}]]</h1>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th scope="col">Название</th>
+                            <th scope="col">Цена</th>
+                            <th scope="col">Количество</th>
+                            <th scope="col">Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each= "element : ${order.element}">
+                            <td><img th:src="@{/img/__*{element.product.imageUrl}__}" class="cart_product_img"></td>
+                            <td th:text="*{element.product.name}"></td>
+                            <td th:text="*{element.product.price}"></td>
+                            <td th:text="${element.quantity}"></td>
+                            <td th:text="*{element.price}"></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Адрес доставки</td>
+                            <td colspan="4" th:text="${order.destination}"></td>
+                        </tr>
+                        <tr>
+                            <td>Пожелания</td>
+                            <td colspan="4" th:text="${order.wishes}"></input></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Сумма</td>
+                            <td th:text="|${order.fullPrice} руб.|">Сумма</td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-primary" href="/catalog">Назад в каталог</a></td>
+                            <td><a class="btn btn-primary" href="/order/ordersList">Назад к заказам</a></td>
+                        </tr>
+                    </tfoot>
+                </table>   
+            </form>
+
+        </div>
+    </body>
+</html>

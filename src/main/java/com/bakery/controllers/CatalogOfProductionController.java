@@ -1,18 +1,11 @@
 package com.bakery.controllers;
 
-import com.bakery.data.ProductionRepository;
-import com.bakery.data.TypeRepository;
 import com.bakery.models.Order;
 import com.bakery.models.Product;
 import com.bakery.models.Type;
-import java.io.File;
+import com.bakery.service.CatalogService;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,22 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/catalog")
 @SessionAttributes({"selectedTypeofProduction", "currentOrder"})
 public class CatalogOfProductionController {
+   
+    CatalogService service;
 
-    @Value("${upload.path}")
-    private String uploasPath;
-
-    private final ProductionRepository productRepo;
-    private final TypeRepository typeRepo;
-
-    public CatalogOfProductionController(ProductionRepository productRepo, TypeRepository typeRepo) {
-        this.productRepo = productRepo;
-        this.typeRepo = typeRepo;
+    public CatalogOfProductionController(CatalogService service) {
+        this.service = service;
     }
-
+    
     @GetMapping()
     public String viewAllCatalog(Model model) {
         model.addAttribute("currentType", "Весь каталог");
-        model = setModeltWithTypes(model, -1);
+        model = service.setModeltWithTypes(model, -1);
         model.addAttribute("selectedTypeofProduction", -1);
         if (model.getAttribute("currentOrder") == null) {
             model.addAttribute("currentOrder", new Order());
@@ -65,7 +53,7 @@ public class CatalogOfProductionController {
     @GetMapping("{id}")
     public String viewSortedCatalog(@PathVariable("id") Type type, Model model) {
         model.addAttribute("currentType", type.getName());
-        model = setModeltWithTypes(model, type.getId());
+        model = service.setModeltWithTypes(model, type.getId());
         model.addAttribute("selectedTypeofProduction", type.getId());
         if (model.getAttribute("currentOrder") == null) {
             model.addAttribute("currentOrder", new Order());
@@ -75,54 +63,37 @@ public class CatalogOfProductionController {
 
     @GetMapping("/admin/edit")
     public String catalogEditList(Model model) {
-        model = setModeltWithTypes(model, -1);
+        model = service.setModeltWithTypes(model, -1);
         return "/catalog/catalogEditList";
     }
 
     @GetMapping("/admin/edit/{id}")
     public String productEdit(@PathVariable("id") Product product, Model model) {
         model.addAttribute("product", product);
-        model.addAttribute("types", typeRepo.findAll());
+        model.addAttribute("types", service.findAllTypes());
         return "/catalog/productEdit";
     }
 
     @GetMapping("/admin/delete/{id}")
     public String delete(@PathVariable("id") Product product, Model model) {
-        File uploadDir = new File(uploasPath);
-        File fl = new File(uploadDir.getAbsolutePath() + "/" + product.getImageUrl());
-        fl.delete();
 
-        productRepo.delete(product);
-        model = setModeltWithTypes(model, -1);
+        service.deleteProduct(product);
+        
+        model = service.setModeltWithTypes(model, -1);
         return "/catalog/catalogEditList";
     }
 
     @GetMapping("/admin/types/deletType/{id}")
     public String deleteType(@PathVariable("id") Type type) {
-        typeRepo.delete(type);
-
-        boolean flag = true;
-        Type noneType = new Type();
-        noneType.setName("Неизвестный");
-
-        for (Product prod : productRepo.findAll()) {
-            if (prod.getType() == type.getId()) {
-                if (flag) {
-                    noneType.setId(typeRepo.save(noneType).getId());
-                    prod.setType(noneType.getId());
-                    productRepo.save(prod);
-                    flag = false;
-                } else {
-                    prod.setType(noneType.getId());
-                }
-            }
-        }
+        
+        service.deleteType(type);
+        
         return "redirect:/catalog/admin/types";
     }
 
     @GetMapping("/admin/types")
     public String typeList(Model model) {
-        model.addAttribute("types", typeRepo.findAll());
+        model.addAttribute("types", service.findAllTypes());
         return "/catalog/typeList";
     }
 
@@ -138,7 +109,7 @@ public class CatalogOfProductionController {
         if (bindingResult.hasErrors()) {
             return "/catalog/addNewType";
         }
-        typeRepo.save(type);
+        service.saveType(type);
         return "redirect:/catalog/admin/types";
     }
 
@@ -146,59 +117,30 @@ public class CatalogOfProductionController {
     public String productAdd(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
-        model.addAttribute("types", typeRepo.findAll());
+        model.addAttribute("types", service.findAllTypes());
         return "/catalog/productEdit";
     }
 
     @PostMapping("/admin/edit")
     public String saveProduct(@ModelAttribute("product") @Valid Product product,
-            BindingResult bindingResult,
-            @RequestParam("file") MultipartFile file, Model model) throws IOException {
+                                BindingResult bindingResult,
+                                @RequestParam("file") MultipartFile file, 
+                                Model model) throws IOException {
+        
         if (bindingResult.hasErrors()) {
-            model.addAttribute("types", typeRepo.findAll());
+            model.addAttribute("types", service.findAllTypes());
             return "/catalog/productEdit";
         }
         if (product.getType() == 0) {
             bindingResult.addError(new FieldError("type", "type", "Выберите тип!"));
-            model.addAttribute("types", typeRepo.findAll());
+            model.addAttribute("types", service.findAllTypes());
             return "/catalog/productEdit";
         }
-        if (!file.isEmpty()) {
-            File uploadDir = new File(uploasPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + '.' + product.getId() + file.getOriginalFilename().substring(file.getOriginalFilename().length() - 4);
-
-            File fl = new File(uploadDir.getAbsolutePath() + "/" + product.getImageUrl());
-            fl.delete();
-
-            product.setImageUrl(resultFileName);
-            file.transferTo(new File(uploadDir.getAbsolutePath() + "/" + resultFileName));
-        }
-        productRepo.save(product);
+        
+        service.saveProduct(product, file);
+        
         return "redirect:/catalog/admin/edit";
     }
 
-    private Model setModeltWithTypes(Model model, long selectedType) {
-        List<Type> typeList = new ArrayList<>();
-        List<Product> prodList = new ArrayList<>();
 
-        productRepo.findAll().forEach(i -> prodList.add(i));
-        typeRepo.findAll().forEach(i -> typeList.add(i));
-
-        for (Type type : typeList) {
-            if (selectedType == -1) {
-                model.addAttribute("Attr" + String.valueOf(type.getId()),
-                        prodList.stream().filter(x -> x.getType() == type.getId()).collect(Collectors.toList()));
-            } else {
-                model.addAttribute("Attr" + String.valueOf(selectedType),
-                        prodList.stream().filter(x -> x.getType() == selectedType).collect(Collectors.toList()));
-            }
-        }
-        model.addAttribute("types", typeList);
-        return model;
-
-    }
 }

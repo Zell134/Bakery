@@ -1,4 +1,4 @@
-package com.bakery.security;
+package com.bakery.models;
 
 import com.bakery.models.Role;
 import com.bakery.models.User;
@@ -23,10 +23,11 @@ public class RegistrationForm {
     @NotBlank(message = "Пароль обязателен для заполнения!")
     private String password;
     @NotBlank(message = "Пароли должны совпадать!")
-    private String confirm;  
+    private String confirm;
     @NotBlank(message = "Email обязателен для заполнения!")
     @Email(message = "Не корректный формат электронной почты!")
     private String email;
+    private String activationCode;
     @NotBlank(message = "Улица обязателена для заполнения!")
     private String street;
     @NotBlank(message = "Дом обязателен для заполнения!")
@@ -46,6 +47,6 @@ public class RegistrationForm {
                 street,
                 house,
                 apartment,
-                phone, true, roles);
+                phone, roles);
     }
 }
