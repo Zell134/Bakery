@@ -3,7 +3,7 @@ spring:
         :console:
             enabled: true
     datasource:
-        url: jdbc:postgresql://localhost/Bakery
+        url: jdbc:postgresql://localhost/bakery
         username: postgres
         password: postgresql
 #        url: jdbc:h2:mem:testdb
@@ -19,14 +19,20 @@ spring:
         password: ZellRus34
         port: 465
         protocol: smtps
+    session:
+        jdbc:
+            initialize-schema: always
+            table-name: SPRING_SESSION
 mail:
     gebug: true
         
 bakery:
     title: my bakery
-    host: 192.168.34.63:8080
+    host: 18.133.219.180
+#    host: 192.168.34.63:8080
     
 upload:
-    path: src/main/resources/static/img
+    path: /home/ubuntu/img
+#    path: src/main/resources/static/img
     
     

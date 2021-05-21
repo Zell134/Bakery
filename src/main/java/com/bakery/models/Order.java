@@ -1,5 +1,6 @@
 package com.bakery.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
@@ -20,7 +21,9 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable{
+    
+    static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

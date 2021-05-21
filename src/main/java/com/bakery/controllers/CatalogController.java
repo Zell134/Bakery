@@ -22,11 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/catalog")
 @SessionAttributes({"selectedTypeofProduction", "currentOrder"})
-public class CatalogOfProductionController {
+public class CatalogController {
    
     CatalogService service;
 
-    public CatalogOfProductionController(CatalogService service) {
+    public CatalogController(CatalogService service) {
         this.service = service;
     }
     
@@ -38,6 +38,7 @@ public class CatalogOfProductionController {
         if (model.getAttribute("currentOrder") == null) {
             model.addAttribute("currentOrder", new Order());
         }
+        System.out.println(model.getAttribute("currentOrder"));
         return "/catalog/catalog";
     }
 

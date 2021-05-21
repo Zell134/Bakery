@@ -1,5 +1,6 @@
 package com.bakery.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,9 @@ import lombok.Data;
 @Table(name = "Production")
 @Data
 @AllArgsConstructor
-public class Product {
+public class Product implements Serializable {
+    
+    static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

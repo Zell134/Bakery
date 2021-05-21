@@ -3,15 +3,15 @@
       xmlns:th="http://www.thymeleaf.org">
     <head>
         <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
-        
+
         <link th:insert="header.html"/>
-        
+
         <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
     </head>
     <body>
         <div th:insert="menu/topMenu.html"/>
         <div class="container">   
-            
+
             <h1>Список продукции</h1>   
 
             <table class="table">
@@ -27,7 +27,7 @@
                 <tbody>
                     <div th:each="type : ${types}">
                         <tr class="typeName">
-                            <td th:text="${type.getName()}"> type</td>
+                            <th th:text="${type.getName()}"> type</th>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -47,6 +47,9 @@
                     <tr>
                         <td><a class="btn btn-primary" href="/catalog/admin/types">Типы продукции</a></td>
                         <td><a class="btn btn-primary" href="/catalog/admin/edit/new">Добавить продукт</a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </tfoot>
             </table>            

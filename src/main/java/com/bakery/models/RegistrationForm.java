@@ -2,6 +2,7 @@ package com.bakery.models;
 
 import com.bakery.models.Role;
 import com.bakery.models.User;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.validation.constraints.Email;
@@ -16,7 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistrationForm {
+public class RegistrationForm implements Serializable {
+    
+    static final long serialVersionUID = 1L;
 
     @NotBlank(message = "ФИО обязательно для заполнения!")
     private String username;

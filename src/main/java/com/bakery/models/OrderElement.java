@@ -1,5 +1,6 @@
 package com.bakery.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +15,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class OrderElement {
+public class OrderElement implements Serializable {
+    
+    static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
