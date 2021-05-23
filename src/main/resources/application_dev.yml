@@ -23,11 +23,11 @@ mail:
         
 bakery:
     title: my bakery
-    host: http://18.133.219.180
-#    host: 192.168.34.63:8080
+    #host: http://18.133.219.180
+    host: 192.168.34.63:8080
     
 upload:
-    path: img
-    #path: src\\main\\resources\\static\\images
+    #path: img
+    path: src\\main\\resources\\static\\images
     
     

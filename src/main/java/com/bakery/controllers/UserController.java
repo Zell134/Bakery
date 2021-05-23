@@ -26,21 +26,21 @@ public class UserController {
     @GetMapping
     public String userList(Model model) {
         model.addAttribute("users", userRepository.findAll());
-        return "/users/userList";
+        return "users/userList";
     }
 
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
-        return "/users/userEdit";
+        return "users/userEdit";
     }
 
     @PostMapping
     public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", Role.values());
-            return "/users/userEdit";
+            return "users/userEdit";
         }
         userRepository.save(user);
         return "redirect:/user";

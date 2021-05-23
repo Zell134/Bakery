@@ -31,7 +31,7 @@ public class CoreController {
     @RequestMapping(path = "/profile", method = RequestMethod.GET)
     public String profile(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("user", user);
-        return "/profile";
+        return "profile";
     }
 
     @RequestMapping(path = "/profile", method = RequestMethod.POST)
@@ -47,7 +47,7 @@ public class CoreController {
                 bindingResult.hasFieldErrors("phone")) {
             
             model.addAttribute("user", changedUser);
-            return "/profile";
+            return "profile";
         }      
         
         userService.uppdateUser(user, changedUser);

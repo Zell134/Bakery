@@ -61,7 +61,7 @@ public class RegistrationController {
         boolean isActivated = userService.activateUser(code);
         if(isActivated)
             System.out.println("User is activated!");
-        return "/login";
+        return "login";
     }
 
 }

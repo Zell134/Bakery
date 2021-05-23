@@ -31,7 +31,7 @@ public class OrderController {
     @GetMapping("/info/{id}")
     public String orderInfo(@PathVariable("id") Order order, Model model){
         model.addAttribute("order", order);
-        return "/order/orderInfo";
+        return "order/orderInfo";
     }
 
     @PostMapping("{id}")
@@ -53,7 +53,7 @@ public class OrderController {
 
     @GetMapping("/confirmOrder")
     public String confirmOrder(@ModelAttribute("currentOrder") Order order, Model model) {
-        return "/order/confirmOrder";
+        return "order/confirmOrder";
     }
 
     @GetMapping("/deleteItem/{id}")
@@ -66,14 +66,14 @@ public class OrderController {
         if (order.getElement().isEmpty()) {
             return "redirect:/catalog";
         } else {
-            return "/order/confirmOrder";
+            return "order/confirmOrder";
         }
     }
 
     @GetMapping("/ordersList")
     public String ordersList(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("orders", service.findUserOrders(user));
-        return "/order/list";
+        return "order/list";
     }
 
     @PostMapping("/ordersList")
@@ -85,7 +85,7 @@ public class OrderController {
         model.addAttribute("orders", service.findUserOrders(order.getUser()));
         model.addAttribute("currentOrder", new Order());         
 
-        return "/order/list";
+        return "order/list";
     }
 
 }

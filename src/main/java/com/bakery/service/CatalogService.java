@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CatalogService {
 
     @Value("${upload.path}")
-    private String uploasPath;
+    private String uploadsPath;
 
     private final ProductionRepository productRepo;
     private final TypeRepository typeRepo;
@@ -61,7 +61,7 @@ public class CatalogService {
 
     public void deleteProduct(Product product) {
 
-        File uploadDir = new File(uploasPath);
+        File uploadDir = new File(uploadsPath);
         File fl = new File(uploadDir.getAbsolutePath() + "/" + product.getImageUrl());
         fl.delete();
 
@@ -94,18 +94,21 @@ public class CatalogService {
     }
 
     public void saveProduct(Product product, MultipartFile file) throws IOException {
+        
+        
 
         if (!file.isEmpty()) {
-            File uploadDir = new File(uploasPath);
+            File uploadDir = new File(uploadsPath);
+
             if (!uploadDir.exists()) {
-                uploadDir.mkdir();
+                System.out.println(uploadDir.mkdir());
             }
             String uuidFile = UUID.randomUUID().toString();
             String resultFileName = uuidFile + '.' + product.getId() + file.getOriginalFilename().substring(file.getOriginalFilename().length() - 4);
 
             File fl = new File(uploadDir.getAbsolutePath() + "/" + product.getImageUrl());
-            fl.delete();
-
+            if(fl.exists())
+                fl.delete();
             product.setImageUrl(resultFileName);
             file.transferTo(new File(uploadDir.getAbsolutePath() + "/" + resultFileName));
         }

@@ -38,8 +38,7 @@ public class CatalogController {
         if (model.getAttribute("currentOrder") == null) {
             model.addAttribute("currentOrder", new Order());
         }
-        System.out.println(model.getAttribute("currentOrder"));
-        return "/catalog/catalog";
+        return "catalog/catalog";
     }
 
     @GetMapping("/info/{id}")
@@ -48,7 +47,7 @@ public class CatalogController {
         if (model.getAttribute("currentOrder") == null) {
             model.addAttribute("currentOrder", new Order());
         }
-        return "/order/info";
+        return "order/info";
     }
 
     @GetMapping("{id}")
@@ -59,20 +58,20 @@ public class CatalogController {
         if (model.getAttribute("currentOrder") == null) {
             model.addAttribute("currentOrder", new Order());
         }
-        return "/catalog/catalog";
+        return "catalog/catalog";
     }
 
     @GetMapping("/admin/edit")
     public String catalogEditList(Model model) {
         model = service.setModeltWithTypes(model, -1);
-        return "/catalog/catalogEditList";
+        return "catalog/catalogEditList";
     }
 
     @GetMapping("/admin/edit/{id}")
     public String productEdit(@PathVariable("id") Product product, Model model) {
         model.addAttribute("product", product);
         model.addAttribute("types", service.findAllTypes());
-        return "/catalog/productEdit";
+        return "catalog/productEdit";
     }
 
     @GetMapping("/admin/delete/{id}")
@@ -81,7 +80,7 @@ public class CatalogController {
         service.deleteProduct(product);
         
         model = service.setModeltWithTypes(model, -1);
-        return "/catalog/catalogEditList";
+        return "catalog/catalogEditList";
     }
 
     @GetMapping("/admin/types/deletType/{id}")
@@ -95,20 +94,20 @@ public class CatalogController {
     @GetMapping("/admin/types")
     public String typeList(Model model) {
         model.addAttribute("types", service.findAllTypes());
-        return "/catalog/typeList";
+        return "catalog/typeList";
     }
 
     @GetMapping("/admin/types/addType")
     public String newType(@ModelAttribute("product") Product product, Model model) {
         Type type = new Type();
         model.addAttribute("type", type);
-        return "/catalog/addNewType";
+        return "catalog/addNewType";
     }
 
     @PostMapping("/admin/types/addType")
     public String addNewType(@ModelAttribute("type") @Valid Type type, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "/catalog/addNewType";
+            return "catalog/addNewType";
         }
         service.saveType(type);
         return "redirect:/catalog/admin/types";
@@ -119,7 +118,7 @@ public class CatalogController {
         Product product = new Product();
         model.addAttribute("product", product);
         model.addAttribute("types", service.findAllTypes());
-        return "/catalog/productEdit";
+        return "catalog/productEdit";
     }
 
     @PostMapping("/admin/edit")
@@ -130,14 +129,13 @@ public class CatalogController {
         
         if (bindingResult.hasErrors()) {
             model.addAttribute("types", service.findAllTypes());
-            return "/catalog/productEdit";
+            return "catalog/productEdit";
         }
         if (product.getType() == 0) {
             bindingResult.addError(new FieldError("type", "type", "Выберите тип!"));
             model.addAttribute("types", service.findAllTypes());
-            return "/catalog/productEdit";
+            return "catalog/productEdit";
         }
-        
         service.saveProduct(product, file);
         
         return "redirect:/catalog/admin/edit";
