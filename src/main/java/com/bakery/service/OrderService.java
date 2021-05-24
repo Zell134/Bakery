@@ -80,7 +80,7 @@ public class OrderService {
     }
 
     public void sendMail(Order order) {
-        String мessage = "Получен заказ № " + order.getId() + ".\n\n";
+        String мessage = "Оформлен заказ № " + order.getId() + ".\n\n";
 
         int counter = 1;
         for (OrderElement element : order.getElement()) {
@@ -93,5 +93,6 @@ public class OrderService {
         мessage += "Телефон - " + order.getUser().getPhone() + "\n";
 
         mailSender.send(mailToOrders, "Заказ № " + order.getId(), мessage);
+        mailSender.send(order.getUser().getEmail(), "Заказ № " + order.getId(), мessage);
     }
 }

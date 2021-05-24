@@ -7,6 +7,9 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -69,11 +72,13 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
 
         userRepository.save(user);
+        
 
         return true;
     }
 
     public void uppdateUser(User user, User changedUser) {
+        
         user.setUsername(changedUser.getUsername());
         user.setStreet(changedUser.getStreet());
         user.setHouse(changedUser.getHouse());
@@ -81,6 +86,8 @@ public class UserService implements UserDetailsService {
         user.setPhone(changedUser.getPhone());
         
         userRepository.save(user);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
 }

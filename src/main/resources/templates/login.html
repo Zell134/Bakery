@@ -3,30 +3,30 @@
       xmlns:th="http://www.thymeleaf.org">
     <head>
         <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
-        
+
         <link th:insert="header.html"/>
-        
+
         <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
     </head>
     <body>
         <div th:insert="menu/topMenu.html"/>        
-    
+
         <div class="container">
             <h1>Login</h1>
             <img th:src="@{/img.jpeg}"/>
-            <div th:if="${param.error}">
-                Невозможно войти. Проверьте email и пароль. Или необходимо пройти активацию профиля, перейдя по ссылке в почте.
-            </div>
+            <div th:if="${param.error}"></br>
+                <span style="color: #de707b"> Невозможно войти. Проверьте email и пароль. Или необходимо пройти активацию профиля, перейдя по ссылке на электронной почте.</span>
+            </div></br>
 
             <p>Новичек здесь? Нажмите <a th:href="@{/registration}">сюда</a> , чтобы зарегистрироваться.</p>
 
             <form method="POST" th:action="@{/login}" id="loginForm">
                 <label class="form-label" for="email">Email: </label>
                 <input class="form-control sm-1" type="text" name="email" id="email"/><br/>
-                
+
                 <label class="form-label" for="password">Пароль </label>
                 <input class="form-control" type="password" name="password" id="password" /><br/>
-                
+
                 <input class="btn btn-primary" type="submit" value="login"/>
             </form>
         </div>

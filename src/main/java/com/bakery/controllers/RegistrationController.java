@@ -51,8 +51,6 @@ public class RegistrationController {
             return "registration";
         }
         
-        model.addAttribute("user", user);
-        
         return "redirect:/login";
     }
     
