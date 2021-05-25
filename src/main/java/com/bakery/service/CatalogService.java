@@ -31,11 +31,16 @@ public class CatalogService {
         this.typeRepo = typeRepo;
     }
 
-    public Model setModeltWithTypes(Model model, long selectedType) {
+    public Model setModeltWithTypes(Model model, long selectedType, boolean onlyActive) {
         List<Type> typeList = new ArrayList<>();
         List<Product> prodList = new ArrayList<>();
 
-        productRepo.findAll().forEach(i -> prodList.add(i));
+        if(onlyActive){
+            productRepo.findByActive(true).forEach(i -> prodList.add(i));
+        }
+        else{
+            productRepo.findAll().forEach(i -> prodList.add(i));
+        }
         typeRepo.findAll().forEach(i -> typeList.add(i));
 
         for (Type type : typeList) {
@@ -57,15 +62,6 @@ public class CatalogService {
 
     public Iterable<Product> findAllProducts() {
         return productRepo.findAll();
-    }
-
-    public void deleteProduct(Product product) {
-
-        File uploadDir = new File(uploadsPath);
-        File fl = new File(uploadDir.getAbsolutePath() + "/" + product.getImageUrl());
-        fl.delete();
-
-        productRepo.delete(product);
     }
 
     public void deleteType(Type type) {
@@ -112,6 +108,11 @@ public class CatalogService {
             product.setImageUrl(resultFileName);
             file.transferTo(new File(uploadDir.getAbsolutePath() + "/" + resultFileName));
         }
+        productRepo.save(product);
+    }
+
+    public void activate(Product product) {
+        product.setActive(!product.isActive());
         productRepo.save(product);
     }
 }

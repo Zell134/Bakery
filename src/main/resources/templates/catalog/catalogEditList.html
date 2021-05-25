@@ -38,7 +38,7 @@
                             <td th:text="${prod.name}"></td>
                             <td th:text="${prod.price}"></td>
                             <td th:text="${prod.active} ? 'Да' : 'Нет'"></td>
-                            <td><a class="btn btn-primary" th:href="@{/catalog/admin/delete/__*{prod.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
+                            <td><a class="btn btn-primary" th:href="@{/catalog/admin/activate/__*{prod.getId()}__}" th:text="${prod.active} ? 'Деактивировать' : 'Активировать'"></a></td>
                             <td><a class="btn btn-primary" th:href="@{/catalog/admin/edit/__${prod.getId()}__}"/>Редактировать</td>
                         </tr>
                     </div>

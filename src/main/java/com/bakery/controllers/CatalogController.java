@@ -23,17 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/catalog")
 @SessionAttributes({"selectedTypeofProduction", "currentOrder"})
 public class CatalogController {
-   
+
     CatalogService service;
 
     public CatalogController(CatalogService service) {
         this.service = service;
     }
-    
+
     @GetMapping()
     public String viewAllCatalog(Model model) {
         model.addAttribute("currentType", "Весь каталог");
-        model = service.setModeltWithTypes(model, -1);
+        model = service.setModeltWithTypes(model, -1, true);
         model.addAttribute("selectedTypeofProduction", -1);
         if (model.getAttribute("currentOrder") == null) {
             model.addAttribute("currentOrder", new Order());
@@ -53,7 +53,7 @@ public class CatalogController {
     @GetMapping("{id}")
     public String viewSortedCatalog(@PathVariable("id") Type type, Model model) {
         model.addAttribute("currentType", type.getName());
-        model = service.setModeltWithTypes(model, type.getId());
+        model = service.setModeltWithTypes(model, type.getId(), true);
         model.addAttribute("selectedTypeofProduction", type.getId());
         if (model.getAttribute("currentOrder") == null) {
             model.addAttribute("currentOrder", new Order());
@@ -63,7 +63,7 @@ public class CatalogController {
 
     @GetMapping("/admin/edit")
     public String catalogEditList(Model model) {
-        model = service.setModeltWithTypes(model, -1);
+        model = service.setModeltWithTypes(model, -1, false);
         return "catalog/catalogEditList";
     }
 
@@ -74,20 +74,19 @@ public class CatalogController {
         return "catalog/productEdit";
     }
 
-    @GetMapping("/admin/delete/{id}")
-    public String delete(@PathVariable("id") Product product, Model model) {
-
-        service.deleteProduct(product);
-        
-        model = service.setModeltWithTypes(model, -1);
+    @GetMapping("/admin/activate/{id}")
+    public String productActivate(@PathVariable("id") Product product, Model model) {
+        System.out.println(product);
+        service.activate(product);
+        model = service.setModeltWithTypes(model, -1, false);
         return "catalog/catalogEditList";
     }
 
     @GetMapping("/admin/types/deletType/{id}")
     public String deleteType(@PathVariable("id") Type type) {
-        
+
         service.deleteType(type);
-        
+
         return "redirect:/catalog/admin/types";
     }
 
@@ -123,10 +122,10 @@ public class CatalogController {
 
     @PostMapping("/admin/edit")
     public String saveProduct(@ModelAttribute("product") @Valid Product product,
-                                BindingResult bindingResult,
-                                @RequestParam("file") MultipartFile file, 
-                                Model model) throws IOException {
-        
+            BindingResult bindingResult,
+            @RequestParam("file") MultipartFile file,
+            Model model) throws IOException {
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("types", service.findAllTypes());
             return "catalog/productEdit";
@@ -137,9 +136,8 @@ public class CatalogController {
             return "catalog/productEdit";
         }
         service.saveProduct(product, file);
-        
+
         return "redirect:/catalog/admin/edit";
     }
-
 
 }
