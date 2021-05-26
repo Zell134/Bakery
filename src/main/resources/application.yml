@@ -18,6 +18,9 @@ spring:
         jdbc:
             initialize-schema: always
             table-name: SPRING_SESSION
+    flyway:
+        enabled: true
+        baseline-on-migrate: true
 mail:
     gebug: true
         

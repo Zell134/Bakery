@@ -22,16 +22,16 @@
                 </thead>
                 <tbody>
                     <div th:each="type : ${types}">
-                        <tr class="typeName">
+                        <tr class="typeName table-row">
                             <td th:text="${type.getName()}"> type</td>
-                            <td><a class="btn btn-primary" th:href="@{/catalog/admin/types/deletType/__*{type.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
+                            <td><a class="btn btn-outline-secondary" th:href="@{/catalog/admin/types/deletType/__*{type.getId()}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
                         </tr>
                     </div>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td><a class="btn btn-primary" href="/catalog/admin/types/addType">Добавить тип</a></td>
-                        <td><a class="btn btn-primary" href="/catalog/admin/edit">Редактор каталога</a></td>
+                        <td><a class="btn btn-outline-secondary" href="/catalog/admin/types/addType">Добавить тип</a></td>
+                        <td><a class="btn btn-outline-secondary" href="/catalog/admin/edit">Редактор каталога</a></td>
                     </tr>
                 </tfoot>
             </table>            

@@ -17,7 +17,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Имя</th>
+                        <th scope="col">Название</th>
                         <th scope="col">Цена</th>
                         <th scope="col">В наличии</th>
                         <th scope="col"></th>
@@ -34,19 +34,19 @@
                             <td></td>
                         </tr>
 
-                        <tr th:each= "prod : ${Attr__${type.getId()}__}">
+                        <tr class="table-row table-row" th:each= "prod : ${Attr__${type.getId()}__}" th:onclick="|window.location='/catalog/admin/edit/${prod.getId()}'|">
                             <td th:text="${prod.name}"></td>
                             <td th:text="${prod.price}"></td>
                             <td th:text="${prod.active} ? 'Да' : 'Нет'"></td>
-                            <td><a class="btn btn-primary" th:href="@{/catalog/admin/activate/__*{prod.getId()}__}" th:text="${prod.active} ? 'Деактивировать' : 'Активировать'"></a></td>
-                            <td><a class="btn btn-primary" th:href="@{/catalog/admin/edit/__${prod.getId()}__}"/>Редактировать</td>
+                            <td><a class="btn btn-outline-secondary" th:href="@{/catalog/admin/activate/__*{prod.getId()}__}" th:text="${prod.active} ? 'Деактивировать' : 'Активировать'"></a></td>
+                            <td><a class="btn btn-outline-secondary" th:href="@{/catalog/admin/edit/__${prod.getId()}__}"/>Редактировать</td>
                         </tr>
                     </div>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td><a class="btn btn-primary" href="/catalog/admin/types">Типы продукции</a></td>
-                        <td><a class="btn btn-primary" href="/catalog/admin/edit/new">Добавить продукт</a></td>
+                        <td><a class="btn btn-outline-secondary" href="/catalog/admin/types">Типы продукции</a></td>
+                        <td><a class="btn btn-outline-secondary" href="/catalog/admin/edit/new">Добавить продукт</a></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -54,6 +54,6 @@
                 </tfoot>
             </table>            
 
-        </div>
+        </div><br/><br/><br/><br/>
     </body>
 </html>

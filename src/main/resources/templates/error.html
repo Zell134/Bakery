@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+
+        <link th:insert="header.html"/>
+
+        <title th:text = "${@environment.getProperty('bakery.title')}">Bakery</title>
+    </head>
+    <body>
+        <div th:insert="menu/topMenu.html"/>
+        <div class="container">   
+            <br/><br/>
+            <h1>Что-то пошло не так!</h1>
+            <a href="/">Вернуться на главную страницу.</a>
+            <br/>
+        </div>
+    </body>
+</html>

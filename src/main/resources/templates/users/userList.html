@@ -26,16 +26,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="user : ${users}">
+                    <tr class="table-row" th:each="user : ${users}" th:onclick="|window.location='/user/${user.getId()}'|">
                         <td th:text="${user.getUsername()}"></td>
                         <td th:text="${user.getRoles()}"></td>
                         <td th:text="${user.getEmail()}"></td>
                         <td th:text="${user.isActive} ? Да : Нет"></td>
-                        <td><a class="btn btn-primary" th:href="@{/user/__${user.getId()}__}"/>Edit</td>
+                        <td><a class="btn btn-outline-secondary" th:href="@{/user/__${user.getId()}__}"/>Edit</td>
                     </tr>
                 </tbody>
             </table>
-            <a class="btn btn-primary" href="/registration">Новый пользователь</a>
+            <a class="btn btn-outline-secondary" href="/registration">Новый пользователь</a>
         </div>
     </body>
 </html>

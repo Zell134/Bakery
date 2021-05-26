@@ -2,6 +2,7 @@ package com.bakery.service;
 
 import com.bakery.data.OrderElementRepository;
 import com.bakery.data.OrderRepository;
+import com.bakery.data.TypeRepository;
 import com.bakery.models.Order;
 import com.bakery.models.OrderElement;
 import com.bakery.models.Product;
@@ -20,14 +21,16 @@ public class OrderService {
     private final OrderRepository orderRepo;
     private final OrderElementRepository orderElemRepo;
     private final MailSender mailSender;
+    private final TypeRepository typeRepo;
     @Value("${spring.mail.username}")
     private String mailToOrders;
 
     @Autowired
-    public OrderService(OrderRepository orderRepo, OrderElementRepository orderElemRepo, MailSender mailSender) {
+    public OrderService(OrderRepository orderRepo, OrderElementRepository orderElemRepo, MailSender mailSender, TypeRepository typeRepo) {
         this.orderRepo = orderRepo;
         this.orderElemRepo = orderElemRepo;
         this.mailSender = mailSender;
+        this.typeRepo = typeRepo;
     }
 
     public Order addElement(Order order,
@@ -84,7 +87,12 @@ public class OrderService {
 
         int counter = 1;
         for (OrderElement element : order.getElement()) {
-            мessage += String.format("%d. %s, Количество - %d. \n", counter, element.getProduct().getName(), element.getQuantity());
+            мessage += String.format("%d. %s. %s, Количество - %d. \n", 
+                    counter, 
+                    typeRepo.findById(element.getProduct().getType()).getName(), 
+                    element.getProduct().getName(), 
+                    element.getQuantity()
+            );
             counter++;
         }
         мessage += "Сумма заказа - " + order.getFullPrice() + ".\n\n";

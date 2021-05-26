@@ -38,33 +38,37 @@
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('street')}">
                     <span th:errors="*{street}">Error</span><br/>
                 </div>
-        
+
                 <label class="form-label" for="house">Дом: </label>
                 <input class="form-control" type="text" name="house" th:field="*{house}" th:text="${house}"/><br/>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('house')}">
                     <span th:errors="*{house}">Error</span><br/>
                 </div>
-        
+
                 <label class="form-label" for="apartment">Квартира: </label>
                 <input class="form-control" type="text" name="apartment" th:field="*{apartment}" th:text="${apartment}"/><br/>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('apartment')}">
                     <span th:errors="*{apartment}">Error</span><br/>
                 </div>
-                
+
                 <label class="form-label" for="phone">Телефон </label>
                 <input class="form-control" type="text" name="phone" th:field="*{phone}" th:text="${phone}"/><br/>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('phone')}">
-                <span th:errors="*{phone}">Error</span><br/>
+                    <span th:errors="*{phone}">Error</span><br/>
                 </div>
-                
+
                 <label class="form-label" for="email">Email: </label>
                 <input class="form-control" type="text" name="email" th:field="*{email}" th:text="${email}"/><br/>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('email')}">
-                <span th:errors="*{email}">Error</span><br/>
+                    <span th:errors="*{email}">Error</span><br/>
                 </div>
-                
-                <input class="btn btn-primary" type="submit" value="Register"/>
+
+                <div class="alert alert-danger" role="alert">
+                    После прохождения регистрации Вам необходимо перейти по ссылке, отправленной на электронную почту, для подтверждения аккаунта.
+                </div>
+
+                <input class="btn btn-outline-secondary" type="submit" value="Register"/>
             </form>
-        </div>
+        </div></br></br></br></br>
     </body>
 </html>

@@ -21,3 +21,12 @@ textarea {
 .nav-item:hover {
     background-color: rgba(77, 77, 77, 0.2);
 }
+
+.table-row:hover {
+    cursor: pointer;
+    background-color: rgba(77, 77, 77, 0.2);
+}
+
+.product_card:hover{
+    background-color: rgba(77, 77, 77, 0.2);
+}

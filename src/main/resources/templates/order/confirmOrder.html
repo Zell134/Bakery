@@ -37,7 +37,7 @@
                             <td><input type="text" th:value="${element.quantity}" th:onchange="|changePrice('${element.product.id}')|" th:name="${element.product.id}"></input></td>
                             <td th:text="*{element.price}" th:id="|${element.product.id}fullprice|"></td>
 
-                            <td><a class="btn btn-primary" th:href="@{/order/deleteItem/__${element.product.id}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
+                            <td><a class="btn btn-outline-secondary" th:href="@{/order/deleteItem/__${element.product.id}__}" onClick="return window.confirm('Хотите удалить?');">Удалить</a></td>
                         </tr>
                     </tbody>
                     <tfoot>
@@ -51,8 +51,8 @@
                         </tr>
                         <tr>
 
-                            <td><input class="btn btn-primary" type="submit" value="Подтвердить"/></td>
-                            <td><a class="btn btn-primary" href="/catalog">Назад в каталог</a></td>
+                            <td><input class="btn btn-outline-secondary" type="submit" value="Подтвердить"/></td>
+                            <td><a class="btn btn-outline-secondary" href="/catalog">Назад в каталог</a></td>
                             <td></td>
                             <td></td>
                             <td>Сумма</td>
