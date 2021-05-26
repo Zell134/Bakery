@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailIgnoreCase(email);
         if (user != null) {
             request.getSession().setAttribute("user", user);
             return user;
@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User addUser(RegistrationForm form) {
-        User user = userRepository.findByEmail(form.getEmail());
+        User user = userRepository.findByEmailIgnoreCase(form.getEmail());
         if (user != null) {
             return null;
         }
