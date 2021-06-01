@@ -7,12 +7,14 @@ import com.bakery.models.Order;
 import com.bakery.models.OrderElement;
 import com.bakery.models.Product;
 import com.bakery.models.User;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,7 +43,7 @@ public class OrderService {
         OrderElement element = new OrderElement(product, quantity);
 
         if (order.getOrderDate() == null) {
-            order.setOrderDate(new Date());
+            order.setOrderDate(LocalDateTime.now());
         }
         if (order.getUser() == null || user != null) {
             order.setUser(user);
@@ -59,8 +61,8 @@ public class OrderService {
         order.deleteElement(product);
     }
 
-    public List<Order> findUserOrders(User user) {
-        return orderRepo.findByUser(user);
+    public Page<Order> findUserOrders(User user, Pageable pageable) {
+        return orderRepo.findByUser(user, pageable);
     }
 
     public void saveOrder(Order order, HttpServletRequest request) {
@@ -78,8 +80,8 @@ public class OrderService {
         order.setFullPrice(parameterMap.get("fullPrice")[0]);
         order.setDestination(parameterMap.get("destination")[0]);
         order.setWishes(parameterMap.get("wishes")[0]);
-        orderRepo.save(order);
-        sendMail(order);
+        order.setOrderDate(LocalDateTime.now());
+        sendMail(orderRepo.save(order));
     }
 
     public void sendMail(Order order) {

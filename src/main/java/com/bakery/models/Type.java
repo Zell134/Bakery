@@ -19,7 +19,7 @@ public class Type implements Serializable {
     static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotBlank(message = "Название обязательно для заполнения!")
     private String name;

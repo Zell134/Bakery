@@ -13,25 +13,43 @@
         <div th:insert="menu/topMenu.html"/>
 
         <div class="container"> 
+
+            <ul class="pagination pagination-sm">
+                <li th:each="page : ${#numbers.sequence(1, orders.getTotalPages())}" th:class="${(orders.getNumber()== (page - 1)) ? 'page-item active' : 'page-item'}">
+                    <a class="page-link" th:text="${page}" th:href="|/order/ordersList?page=${page - 1}&size=${orders.getSize()}|"></a>
+                </li>
+            </ul>
+
+            <ul class="pagination pagination-sm">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Элементов на странице </a>
+                </li>
+                <li th:each="number : ${#numbers.sequence(5, 20, 5)}" th:class="${(orders.getSize()== number) ? 'page-item active' : 'page-item'}">
+                    <a class="page-link" th:href="|/order/ordersList?page=${orders.getNumber()}&size=${number}|">[[${number}]]</a>
+                </li>
+            </ul>
+
             <table class="table">
                 <thead>
                     <tr>
+                        <th scope="col"></th>
                         <th scope="col">Номер</th>
                         <th scope="col">Дата</th>
-                        <th scope="col">Цена</th>
+                        <th scope="col">Стоимость</th>
                         <th scope="col">Место назначения</th>
                     </tr>
                 </thead>
                 <tbody>
-                        <tr class="table-row" th:each= "order, iter : ${orders}" th:onclick="|window.location='/order/info/${order.id}'|">
-                            <td th:text="${iter.index + 1}"></td>
-                            <td th:text="${#dates.format(order.orderDate, 'dd MMMMM yyyy HH:mm')}"></td>
-                            <td th:text="${order.fullPrice}"></td>
-                            <td th:text="${order.destination}"></td>
-                        </tr>
+                    <tr class="table-row" th:each= "order, iter : ${orders}" th:onclick="|window.location='/order/info/${order.id}'|">
+                        <td th:text="${iter.index + 1}"></td>
+                        <td th:text="${order.id}"></td>
+                        <td th:text="${#temporals.format(order.orderDate, 'dd MMMM yyyy HH:mm')}"></td>
+                        <td th:text="${order.fullPrice}"></td>
+                        <td th:text="${order.destination}"></td>
+                    </tr>
                 </tbody>
             </table>
-            
+
             <a class="btn btn-outline-secondary" href="/catalog">Назад в каталог</a>
         </div>
     </body>

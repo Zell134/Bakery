@@ -3,9 +3,15 @@ package com.bakery.data;
 import com.bakery.models.Order;
 import com.bakery.models.User;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 public interface OrderRepository extends CrudRepository<Order, Long>{
-    public List<Order> findByUser(User user);
+
+
+    public Page<Order> findAll(Pageable pageable);
+    
+    public Page <Order> findByUser(User user, Pageable pageable);
     
 }

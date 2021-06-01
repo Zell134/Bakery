@@ -6,6 +6,10 @@ import com.bakery.models.User;
 import com.bakery.service.OrderService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,20 +75,26 @@ public class OrderController {
     }
 
     @GetMapping("/ordersList")
-    public String ordersList(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("orders", service.findUserOrders(user));
+    public String ordersList(
+            @AuthenticationPrincipal User user, 
+            Model model, 
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable
+    ) {
+        Page <Order> page = service.findUserOrders(user, pageable);
+        model.addAttribute("orders", page);
         return "order/list";
     }
 
     @PostMapping("/ordersList")
     public String postOrdersList(@ModelAttribute("currentOrder") Order order,
             HttpServletRequest request,
-            Model model) {
+            Model model, 
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable
+    ) {
        
         service.saveOrder(order, request);
-        model.addAttribute("orders", service.findUserOrders(order.getUser()));
-        model.addAttribute("currentOrder", new Order());         
-
+        model.addAttribute("orders", service.findUserOrders(order.getUser(), pageable));
+        model.addAttribute("currentOrder", new Order()); 
         return "order/list";
     }
 

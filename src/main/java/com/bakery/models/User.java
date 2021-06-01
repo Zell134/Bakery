@@ -33,7 +33,7 @@ public class User implements UserDetails {
     static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
     @NotBlank(message = "ФИО обязательно для заполнения!")
