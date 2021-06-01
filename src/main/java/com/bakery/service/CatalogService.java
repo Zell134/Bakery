@@ -103,7 +103,7 @@ public class CatalogService {
             String resultFileName = uuidFile + '.' + product.getId() + file.getOriginalFilename().substring(file.getOriginalFilename().length() - 4);
 
             File fl = new File(uploadDir.getAbsolutePath() + "/" + product.getImageUrl());
-            if(fl.exists())
+            if(fl.exists() && fl.isFile())
                 fl.delete();
             product.setImageUrl(resultFileName);
             file.transferTo(new File(uploadDir.getAbsolutePath() + "/" + resultFileName));

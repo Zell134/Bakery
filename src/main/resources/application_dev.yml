@@ -1,7 +1,7 @@
 spring:
     datasource:
         #url: jdbc:postgresql://localhost:5432/bakery
-        url: jdbc:postgresql://localhost:5432/Bakery
+        url: jdbc:postgresql://localhost:5432/bakery
         username: postgres
         password: postgresql
     jpa:
