@@ -1,7 +1,7 @@
 spring:
     datasource:
         #url: jdbc:postgresql://localhost:5432/bakery
-        url: jdbc:postgresql://localhost:5432/bakery
+        url: jdbc:postgresql://localhost:5432/Bakery
         username: postgres
         password: postgresql
     jpa:
@@ -27,8 +27,7 @@ mail:
         
 bakery:
     title: my bakery
-    #host: http://18.133.219.180
-    host: http://192.168.34.63:8080
+    host: 192.168.34.63:8080
     
 upload:
     #path: img

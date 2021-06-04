@@ -3,8 +3,10 @@ package com.bakery.service;
 import com.bakery.data.UserRepository;
 import com.bakery.models.User;
 import com.bakery.models.RegistrationForm;
+import java.net.UnknownHostException;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,7 +43,7 @@ public class UserService implements UserDetailsService {
         throw new UsernameNotFoundException("User '" + email + "' not found");
     }
 
-    public User addUser(RegistrationForm form) {
+    public User addUser(RegistrationForm form) throws UnknownHostException {
         User user = userRepository.findByEmailIgnoreCase(form.getEmail());
         if (user != null) {
             return null;
@@ -57,7 +59,7 @@ public class UserService implements UserDetailsService {
                     user.getUsername(),
                     host,
                     user.getActivationCode());
-            mailSender.send(user.getEmail(), "Activation code", message);
+            mailSender.send(user.getEmail(), "Код активации", message);
         }
 
         return user;
@@ -88,6 +90,32 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    public boolean remindPassword(String email) {
+        User user = userRepository.findByEmailIgnoreCase(email);
+        if(user==null){
+            return false;
+        }
+        
+        RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder().withinRange('a', 'z').build();
+        String newPassword = pwdGenerator.generate(5);
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String message = String.format(
+                    "Здравствуйте, Ваш пароль был изменен на \"%s\". "
+                    + "После использования нового пароля измените его в своем личном кабинете на необходимый."
+                    , newPassword
+            );
+            mailSender.send(user.getEmail(), "Сброс пароля", message); 
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        }
+        return true;
+    }
+    
+    public void changePassword(User user, String password){
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
 }

@@ -15,20 +15,74 @@
             <h1>Login</h1>
             <img th:src="@{/img.jpeg}"/>
             <div th:if="${param.error}"></br>
-                <span style="color: #de707b"> Невозможно войти. Проверьте email и пароль. Или необходимо пройти активацию профиля, перейдя по ссылке на электронной почте.</span>
-            </div></br>
+                <div class="alert alert-danger m-3" role="alert">
+                    Невозможно войти. Проверьте email и пароль. Или необходимо пройти активацию профиля, перейдя по ссылке на электронной почте.                    
+                </div>
+            </div></br></br>
 
             <p>Новичек здесь? Нажмите <a th:href="@{/registration}">сюда</a> , чтобы зарегистрироваться.</p>
 
             <form method="POST" th:action="@{/login}" id="loginForm">
-                <label class="form-label" for="email">Email: </label>
-                <input class="form-control sm-1" type="text" name="email" id="email"/><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="email">Email: </label>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control col-2" type="text" name="email" id="email" onclick="hideMessage()"/><br/>
+                    </div>
+                </div>
 
-                <label class="form-label" for="password">Пароль </label>
-                <input class="form-control" type="password" name="password" id="password" /><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="password">Пароль </label>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control col" type="password" name="password" id="password" onclick="hideMessage()"/><br/>
+                    </div>
+                </div>
 
-                <input class="btn btn-outline-secondary" type="submit" value="login"/>
+                <div class="alert alert-danger d-none" role="alert" id="alertMessageDiv">
+                    <span id="message"> Вам на электронную почту был отправлен новый пароль!</span>                    
+                </div>
+
+                <input class="btn btn-outline-secondary mx-3" type="submit" value="Войти"/>
+                <input class="btn btn-outline-secondary mx-3" type="button" value="Регистрация" onclick="document.location = '/registration'"/>
+                <input class="btn btn-outline-secondary mx-3" type="button" value="Напомнить пароль" onclick="remindPassword()"/>
             </form>
         </div>
+        <script>
+            function remindPassword() {
+                var message = document.getElementById('message');
+                var email = document.getElementById('email').value;
+                var csrf = document.getElementsByName('_csrf')[0].value;
+                var alertMessageDiv = document.getElementById("alertMessageDiv");
+
+                alertMessageDiv.classList.add("d-none");
+                if (email === '') {
+                    message.innerHTML = "Необходимо ввести электронную почту!";
+                    alertMessageDiv.classList.remove("d-none");
+                } else {
+                    var xhr = new XMLHttpRequest();
+                    var body = '_csrf=' + encodeURIComponent(csrf) + '&email=' + encodeURIComponent(email);
+                    xhr.open("POST", '/registration/remindPassword');
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.send(body);
+                    xhr.onload = () => {
+                        if (xhr.response === "true") {
+                            message.innerHTML = "Вам на электронную почту был отправлен новый пароль!";
+                            alertMessageDiv.classList.remove("d-none");
+                        } else {
+                            message.innerHTML = "Пользователь с таким email не найден! Пройдите регистрацию!";
+                            alertMessageDiv.classList.remove("d-none");
+
+                        }
+                    };
+                }
+            }
+
+            function hideMessage() {
+                document.getElementById("alertMessageDiv").classList.add("d-none");
+            }
+        </script>
     </body>
 </html>

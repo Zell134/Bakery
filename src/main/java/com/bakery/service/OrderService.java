@@ -7,7 +7,9 @@ import com.bakery.models.Order;
 import com.bakery.models.OrderElement;
 import com.bakery.models.Product;
 import com.bakery.models.User;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -81,6 +83,7 @@ public class OrderService {
         order.setDestination(parameterMap.get("destination")[0]);
         order.setWishes(parameterMap.get("wishes")[0]);
         order.setOrderDate(LocalDateTime.now());
+        order.setId(0);
         sendMail(orderRepo.save(order));
     }
 
@@ -104,5 +107,17 @@ public class OrderService {
 
         mailSender.send(mailToOrders, "Заказ № " + order.getId(), мessage);
         mailSender.send(order.getUser().getEmail(), "Заказ № " + order.getId(), мessage);
+    }
+
+    public Page<Order> findOrdersBetweenOrderDate(User user, String startDate, String endDate, Pageable pageable) {
+        LocalDateTime start;
+                LocalDateTime end;
+        try{
+            start = LocalDate.parse(startDate).atStartOfDay();
+            end = LocalDate.parse(endDate).atTime(23, 59);            
+        }catch(DateTimeParseException e){
+            return null;
+        }
+        return orderRepo.findByUserAndOrderDateBetween(user, start, end, pageable);
     }
 }

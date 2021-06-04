@@ -2,7 +2,6 @@ package com.bakery.models;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +20,8 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "orders")
-public class Order implements Serializable{
-    
+public class Order implements Serializable {
+
     static final long serialVersionUID = 1L;
 
     @Id
@@ -38,14 +37,15 @@ public class Order implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    
+
     private BigDecimal fullPrice;
-    
+
     private String destination;
-    
+
     String wishes;
 
     public Order() {
+        this.id = 0;
         this.fullPrice = new BigDecimal("0");
         this.element = new ArrayList<>();
         this.orderDate = null;
@@ -74,8 +74,8 @@ public class Order implements Serializable{
             this.element.remove(elemIfExist.get());
         }
     }
-    
-    public void setFullPrice(String fullPrice){
+
+    public void setFullPrice(String fullPrice) {
         this.fullPrice = new BigDecimal(fullPrice);
     }
 }

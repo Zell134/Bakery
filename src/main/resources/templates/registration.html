@@ -12,55 +12,118 @@
         <div th:insert="menu/topMenu.html"/>
         <div class="container">   
             <h1>Регистрация</h1>
-            <img th:src="@{/img.jpeg}"/>
             <form method="POST" th:action="@{/registration}" id="registerForm" th:object="${form}">
 
-                <label class="form-label" for="username">ФИО: </label>
-                <input class="form-control" type="text" name="username" th:field="*{username}" th:text="${username}"/><br/>
-                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('username')}">
-                    <span th:errors="*{username}">Error</span><br/>
+                </br>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="username">ФИО: </label>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control" type="text" name="username" th:field="*{username}" th:text="${username}"/><br/>
+                    </div>
+                    <div class="col-3">
+                        <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('username')}">
+                            <span th:errors="*{username}">Error</span><br/>
+                        </div>
+                    </div>
                 </div>
 
-                <label class="form-label" for="password">Пароль: </label>
-                <input class="form-control" type="password" name="password" th:field="*{password}"/><br/>
-                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('password')}">
-                    <span th:errors="*{password}">Error</span><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="password">Пароль: </label></div>
+                    <div class="col-3">
+                        <input class="form-control" type="password" name="password" th:field="*{password}"/><br/>
+                    </div>
+                    <div class="col-3">
+                        <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('password')}">
+                            <span th:errors="*{password}">Error</span><br/>
+                        </div>
+                    </div>
                 </div>
 
-                <label class="form-label" for="confirm">Повторите пароль: </label>
-                <input class="form-control" type="password" name="confirm" th:field="*{confirm}"/><br/>
-                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('confirm')}">
-                    <span th:errors="*{confirm}">Error</span><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="confirm">Повторите пароль: </label>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control" type="password" name="confirm" th:field="*{confirm}"/><br/>
+                    </div>
+                    <div class="col-3">
+                        <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('confirm')}">
+                            <span th:errors="*{confirm}">Error</span><br/>
+                        </div>
+                    </div>
                 </div>
 
-                <label class="form-label" for="street">Улица: </label>
-                <input class="form-control" type="text" name="street" th:field="*{street}" th:text="${street}"/><br/>
-                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('street')}">
-                    <span th:errors="*{street}">Error</span><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="street">Улица: </label>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control" type="text" name="street" th:field="*{street}" th:text="${street}"/><br/>
+                    </div>
+                    <div class="col-3">
+                        <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('street')}">
+                            <span th:errors="*{street}">Error</span><br/>
+                        </div>
+                    </div>
                 </div>
 
-                <label class="form-label" for="house">Дом: </label>
-                <input class="form-control" type="text" name="house" th:field="*{house}" th:text="${house}"/><br/>
-                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('house')}">
-                    <span th:errors="*{house}">Error</span><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="house">Дом: </label>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control" type="text" name="house" th:field="*{house}" th:text="${house}"/><br/>
+                    </div>
+                    <div class="col-3">
+                        <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('house')}">
+                            <span th:errors="*{house}">Error</span><br/>
+                        </div>
+                    </div>
                 </div>
 
-                <label class="form-label" for="apartment">Квартира: </label>
-                <input class="form-control" type="text" name="apartment" th:field="*{apartment}" th:text="${apartment}"/><br/>
-                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('apartment')}">
-                    <span th:errors="*{apartment}">Error</span><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="apartment">Квартира: </label>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control" type="text" name="apartment" th:field="*{apartment}" th:text="${apartment}"/><br/>
+                    </div>
+                    <div class="col-3">
+                        <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('apartment')}">
+                            <span th:errors="*{apartment}">Error</span><br/>
+                        </div>
+                    </div>
                 </div>
 
-                <label class="form-label" for="phone">Телефон </label>
-                <input class="form-control" type="text" name="phone" th:field="*{phone}" th:text="${phone}"/><br/>
-                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('phone')}">
-                    <span th:errors="*{phone}">Error</span><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="phone">Телефон </label>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control" type="text" name="phone" th:field="*{phone}" th:text="${phone}"/><br/>
+                    </div>
+                    <div class="col-3">
+                        <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('phone')}">
+                            <span th:errors="*{phone}">Error</span><br/>
+                        </div>
+                    </div>
                 </div>
 
-                <label class="form-label" for="email">Email: </label>
-                <input class="form-control" type="text" name="email" th:field="*{email}" th:text="${email}"/><br/>
-                <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('email')}">
-                    <span th:errors="*{email}">Error</span><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="form-label" for="email">Email: </label>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control" type="text" name="email" th:field="*{email}" th:text="${email}"/><br/>
+                    </div>
+                    <div class="col-3">
+                        <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('email')}">
+                            <span th:errors="*{email}">Error</span><br/>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="alert alert-danger" role="alert">

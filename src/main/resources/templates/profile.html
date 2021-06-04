@@ -16,41 +16,80 @@
 
             <form method="POST" th:action="@{/profile}" th:object="${user}">
 
-                <label for="username">ФИО: </label>
-                <input type="text" name="username" th:field="*{username}"/><br/>
+                <br/>
+                <br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label for="username">ФИО: </label>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="username" th:field="*{username}"/><br/>
+                    </div>
+                </div>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('username')}">
                     <span th:errors="*{username}">Error</span><br/>
                 </div>
 
-                <label for="street">Улица: </label>
-                <input type="text" name="street" th:field="*{street}"/><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label for="street">Улица: </label>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="street" th:field="*{street}"/><br/>
+                    </div>
+                </div>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('street')}">
                     <span th:errors="*{street}">Error</span><br/>
                 </div>
 
-                <label for="house">Дом: </label>
-                <input type="text" name="house" th:field="*{house}"/><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label for="house">Дом: </label>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="house" th:field="*{house}"/><br/>
+                    </div>
+                </div>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('house')}">
                     <span th:errors="*{house}">Error</span><br/>
                 </div>
 
-                <label for="apartment">Квартира: </label>
-                <input type="text" name="apartment" th:field="*{apartment}"/><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label for="apartment">Квартира: </label>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="apartment" th:field="*{apartment}"/><br/>
+                    </div>
+                </div>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('apartment')}">
                     <span th:errors="*{apartment}">Error</span><br/>
                 </div>
 
-                <label for="phone">Телефон </label>
-                <input type="text" name="phone" th:field="*{phone}"/><br/>
+                <div class="row">
+                    <div class="col-1">
+                        <label for="phone">Телефон </label>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="phone" th:field="*{phone}"/><br/>
+                    </div>
+                </div>
                 <div class="alert alert-primary" role="alert" th:if="${#fields.hasErrors('phone')}">
                     <span th:errors="*{phone}">Error</span><br/>
                 </div>
 
-                <label for="email">Email: </label>
-                <input type="hidden" name="email" th:field="*{email}"/><br/>
-                <input type="text" name="email" th:field="*{email}"disabled/><br/><br/>
-                
-                <input class="btn btn-outline-secondary" type="submit" value="Изменить"/>
+                <div class="row">
+                    <div class="col-1">
+                        <label for="email">Email: </label> 
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="email" th:field="*{email}"disabled/><br/>
+                    </div>
+                </div>
+                <input type="hidden" name="email" th:field="*{email}"/>
+
+                <input class="btn btn-outline-secondary" type="submit" value="Поменять данные"/>
+                <input class="btn btn-outline-secondary m-4" type="button" value="Изменить пароль" th:onclick="|document.location='/registration/changePassword/${user.id}'|"/>
             </form>
         </div>
     </body>

@@ -29,6 +29,26 @@
                 </li>
             </ul>
 
+            <div th:if="${error} != null" class="alert alert-danger" role="alert" id="alertMessageDiv">
+                <span id="message"> [[${error}]]</span>                    
+            </div>
+
+
+            <form method="POST" th:action="@{/order/sortByDate}">    
+                <div class="row">                    
+                    <div class="col-2">
+                        <input class="form-control m-3" type="date" name="startDate" value="${startDate}"/>
+                    </div>
+                    <div class="col-2">
+                        <input class="form-control m-3" type="date" name="endDate" text="${endDate}"/>                    
+                    </div>
+                    <div class="col-2">
+                        <input type="submit" class="btn btn-outline-secondary m-3" value="Отсортировать по дате"/>
+                    </div>
+                </div>
+            </form>
+
+
             <table class="table">
                 <thead>
                     <tr>
