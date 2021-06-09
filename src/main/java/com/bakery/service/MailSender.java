@@ -1,5 +1,9 @@
 package com.bakery.service;
 
+import java.util.Properties;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,6 +17,10 @@ public class MailSender {
     private JavaMailSender mailSender;
     @Value("${spring.mail.username}")
     private String username;
+    
+    @Value("${spring.mail.password}")
+    private String password;
+    
 
     public void send(String mailTo, String subject, String message) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -20,6 +28,15 @@ public class MailSender {
         mailMessage.setTo(mailTo);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
+
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props,
+                new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(
+                        username, password);
+            }
+        });
 
         mailSender.send(mailMessage);
     }

@@ -11,10 +11,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CoreController {
-    
+
     @Autowired
     UserService userService;
 
@@ -23,8 +24,13 @@ public class CoreController {
         return "index";
     }
 
+    @RequestMapping(path = "/login", method = RequestMethod.GET)
+    public String login(Model model) {
+        return "login";
+    }
+
     @RequestMapping("/contacts")
-    public String contacts(){
+    public String contacts() {
         return "index";
     }
 
@@ -35,20 +41,20 @@ public class CoreController {
     }
 
     @RequestMapping(path = "/profile", method = RequestMethod.POST)
-    public String saveProfile(Model model, 
-                                @AuthenticationPrincipal User user, 
-                                @ModelAttribute("user") @Valid User changedUser, 
-                                BindingResult bindingResult) {
+    public String saveProfile(Model model,
+            @AuthenticationPrincipal User user,
+            @ModelAttribute("user") @Valid User changedUser,
+            BindingResult bindingResult) {
 
-        if (bindingResult.hasFieldErrors("username")||
-                bindingResult.hasFieldErrors("street")||
-                bindingResult.hasFieldErrors("house")||
-                bindingResult.hasFieldErrors("apartment")||
-                bindingResult.hasFieldErrors("phone")) {
-            
+        if (bindingResult.hasFieldErrors("username")
+                || bindingResult.hasFieldErrors("street")
+                || bindingResult.hasFieldErrors("house")
+                || bindingResult.hasFieldErrors("apartment")
+                || bindingResult.hasFieldErrors("phone")) {
+
             model.addAttribute("user", changedUser);
             return "profile";
-        }              
+        }
         userService.uppdateUser(user, changedUser);
 
         return "redirect:/catalog";

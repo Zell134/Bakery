@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/registration")
@@ -42,7 +44,13 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String RegistrationProcess(@ModelAttribute("form") @Valid RegistrationForm form, BindingResult bindingResult, Model model) throws UnknownHostException {
+    public String RegistrationProcess(
+            @ModelAttribute("form") @Valid RegistrationForm form, 
+            BindingResult bindingResult, 
+            Model model,
+            RedirectAttributes redirectAttributes,
+            @RequestHeader String origin
+    ) throws UnknownHostException {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
@@ -50,11 +58,13 @@ public class RegistrationController {
             bindingResult.addError(new FieldError("confirm", "confirm", "Пароли должны совпадать!"));
             return "registration";
         }
-        User user = userService.addUser(form);
+        User user = userService.addUser(form, origin);
         if (user == null) {
             bindingResult.addError(new FieldError("email", "email", "Пользователь с такой электронной почтой уже существует!"));
             return "registration";
         }
+        
+        redirectAttributes.addFlashAttribute("message", "Для завершения регистрации необходимо пройти по ссылеке на электронной почте!");
 
         return "redirect:/login";
     }

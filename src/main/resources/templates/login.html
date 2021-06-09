@@ -20,6 +20,10 @@
                 </div>
             </div></br></br>
 
+            <div th:if="${message}" class="alert alert-danger" role="alert" id="alertMessageDiv">
+                <span> [[${message}]]</span>                    
+            </div>
+
             <p>Новичек здесь? Нажмите <a th:href="@{/registration}">сюда</a> , чтобы зарегистрироваться.</p>
 
             <form method="POST" th:action="@{/login}" id="loginForm">
