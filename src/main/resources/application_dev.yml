@@ -31,7 +31,7 @@ bakery:
     
 upload:
     #path: img
-    path: src\\main\\resources\\static\\images
+    path: src\\main\\resources\\static\\img
     
 server:
     error:

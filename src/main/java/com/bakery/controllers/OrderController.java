@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @RequestMapping("/order")
 public class OrderController {
 
-    OrderService service;
+    private final OrderService service;
 
     @Autowired
     public OrderController(OrderService service) {

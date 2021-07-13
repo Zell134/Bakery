@@ -6,6 +6,7 @@ import com.bakery.models.Type;
 import com.bakery.service.CatalogService;
 import java.io.IOException;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,8 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/catalog")
 @SessionAttributes({"selectedTypeofProduction", "currentOrder"})
 public class CatalogController {
-
-    CatalogService service;
+    
+    private final CatalogService service;
 
     public CatalogController(CatalogService service) {
         this.service = service;

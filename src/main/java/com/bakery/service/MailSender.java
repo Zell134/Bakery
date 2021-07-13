@@ -17,10 +17,9 @@ public class MailSender {
     private JavaMailSender mailSender;
     @Value("${spring.mail.username}")
     private String username;
-    
+
     @Value("${spring.mail.password}")
     private String password;
-    
 
     public void send(String mailTo, String subject, String message) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -37,8 +36,10 @@ public class MailSender {
                         username, password);
             }
         });
-
-        mailSender.send(mailMessage);
+        Thread thread = new Thread(() -> {
+            mailSender.send(mailMessage);
+        });
+        thread.start();
     }
 
 }

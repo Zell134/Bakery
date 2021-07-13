@@ -6,10 +6,11 @@ import com.bakery.models.Product;
 import com.bakery.models.Type;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,56 +33,57 @@ public class CatalogService {
     }
 
     public Model setModeltWithTypes(Model model, long selectedType, boolean onlyActive) {
-        List<Type> typeList = new ArrayList<>();
-        List<Product> prodList = new ArrayList<>();
+        List<Type> typeList;
+        List<Product> prodList;
 
-        if(onlyActive){
-            productRepo.findByActive(true).forEach(i -> prodList.add(i));
+        if (onlyActive) {
+            prodList = productRepo.findByActive(true);
+        } else {
+            prodList = findAllProducts();
         }
-        else{
-            productRepo.findAll().forEach(i -> prodList.add(i));
-        }
-        typeRepo.findAll().forEach(i -> typeList.add(i));
+        typeList = findAllTypes();
 
-        for (Type type : typeList) {
-            if (selectedType == -1) {
-                model.addAttribute("Attr" + String.valueOf(type.getId()),
-                        prodList.stream().filter(x -> x.getType() == type.getId()).collect(Collectors.toList()));
-            } else {
-                model.addAttribute("Attr" + String.valueOf(selectedType),
-                        prodList.stream().filter(x -> x.getType() == selectedType).collect(Collectors.toList()));
-            }
+        if (selectedType == -1) {
+            Map<Long, List<Product>> productWithTypes;
+
+            productWithTypes = prodList.stream()
+                    .collect(Collectors.groupingBy(Product::getType));
+
+            productWithTypes.forEach((type, products) -> model.addAttribute("Attr" + type, products));
+        } else {
+            prodList = prodList.stream()
+                            .filter(product -> product.getType() == selectedType)
+                            .collect(Collectors.toList());
+            model.addAttribute("Attr" + String.valueOf(selectedType),prodList);
         }
         model.addAttribute("types", typeList);
         return model;
     }
 
-    public Iterable<Type> findAllTypes() {
-        return typeRepo.findAll();
+    public List<Type> findAllTypes() {
+        return StreamSupport.stream(typeRepo.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
-    public Iterable<Product> findAllProducts() {
-        return productRepo.findAll();
+    public List<Product> findAllProducts() {
+        return StreamSupport.stream(productRepo.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public void deleteType(Type type) {
-        typeRepo.delete(type);
 
-        boolean flag = true;
-        Type noneType = new Type();
-        noneType.setName("Неизвестный");
+        List<Product> products = productRepo.findByType(type.getId());
 
-        for (Product prod : productRepo.findAll()) {
-            if (prod.getType() == type.getId()) {
-                if (flag) {
-                    noneType.setId(typeRepo.save(noneType).getId());
-                    prod.setType(noneType.getId());
-                    productRepo.save(prod);
-                    flag = false;
-                } else {
-                    prod.setType(noneType.getId());
-                }
-            }
+        if (products.isEmpty()) {
+            typeRepo.delete(type);
+        } else {
+            type.setName("Неизвестный");
+            typeRepo.save(type);
+            
+            products.forEach(product -> {
+                product.setActive(false);
+                productRepo.save(product);
+            });
         }
     }
 
@@ -90,21 +92,20 @@ public class CatalogService {
     }
 
     public void saveProduct(Product product, MultipartFile file) throws IOException {
-        
-        
 
         if (!file.isEmpty()) {
             File uploadDir = new File(uploadsPath);
 
             if (!uploadDir.exists()) {
-                System.out.println(uploadDir.mkdir());
+                uploadDir.mkdir();
             }
             String uuidFile = UUID.randomUUID().toString();
             String resultFileName = uuidFile + '.' + product.getId() + file.getOriginalFilename().substring(file.getOriginalFilename().length() - 4);
 
             File fl = new File(uploadDir.getAbsolutePath() + "/" + product.getImageUrl());
-            if(fl.exists() && fl.isFile())
+            if (fl.exists() && fl.isFile()) {
                 fl.delete();
+            }
             product.setImageUrl(resultFileName);
             file.transferTo(new File(uploadDir.getAbsolutePath() + "/" + resultFileName));
         }

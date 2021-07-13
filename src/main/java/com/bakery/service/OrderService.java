@@ -72,18 +72,19 @@ public class OrderService {
         Map<String, String[]> parameterMap = request.getParameterMap();
         List<OrderElement> orderElements = order.getElement();
 
-        for (String key : parameterMap.keySet()) {
+        parameterMap.keySet().forEach(key -> {
             if (!key.equals("_csrf") && !key.equals("destination") && !key.equals("wishes") && !key.equals("fullPrice")) {
                 OrderElement element = (OrderElement) orderElements.stream().filter(e -> e.getProduct().getId() == Long.valueOf(key)).findFirst().get();
                 element.setQuantity(Integer.valueOf(parameterMap.get(key)[0]));
                 orderElemRepo.save(element);
             }
-        }
+        });
         order.setFullPrice(parameterMap.get("fullPrice")[0]);
         order.setDestination(parameterMap.get("destination")[0]);
         order.setWishes(parameterMap.get("wishes")[0]);
         order.setOrderDate(LocalDateTime.now());
         order.setId(0);
+
         sendMail(orderRepo.save(order));
     }
 
@@ -92,10 +93,10 @@ public class OrderService {
 
         int counter = 1;
         for (OrderElement element : order.getElement()) {
-            мessage += String.format("%d. %s. %s, Количество - %d. \n", 
-                    counter, 
-                    typeRepo.findById(element.getProduct().getType()).getName(), 
-                    element.getProduct().getName(), 
+            мessage += String.format("%d. %s. %s, Количество - %d. \n",
+                    counter,
+                    typeRepo.findById(element.getProduct().getType()).getName(),
+                    element.getProduct().getName(),
                     element.getQuantity()
             );
             counter++;
@@ -111,11 +112,11 @@ public class OrderService {
 
     public Page<Order> findOrdersBetweenOrderDate(User user, String startDate, String endDate, Pageable pageable) {
         LocalDateTime start;
-                LocalDateTime end;
-        try{
+        LocalDateTime end;
+        try {
             start = LocalDate.parse(startDate).atStartOfDay();
-            end = LocalDate.parse(endDate).atTime(23, 59);            
-        }catch(DateTimeParseException e){
+            end = LocalDate.parse(endDate).atTime(23, 59);
+        } catch (DateTimeParseException e) {
             return null;
         }
         return orderRepo.findByUserAndOrderDateBetween(user, start, end, pageable);

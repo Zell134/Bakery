@@ -11,13 +11,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CoreController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping("/")
     public String root() {
