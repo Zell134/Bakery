@@ -21,7 +21,7 @@ import lombok.Data;
 @Data
 @Table(name = "orders")
 public class Order implements Serializable {
-
+    
     static final long serialVersionUID = 1L;
 
     @Id
@@ -56,7 +56,7 @@ public class Order implements Serializable {
 
     public void addElement(OrderElement element) {
         Optional<OrderElement> elemIfExist = this.element.stream().filter(elem -> elem.getProduct().equals(element.getProduct())).findFirst();
-        if (!elemIfExist.isEmpty()) {
+        if (elemIfExist.isPresent()) {
             int index = this.element.indexOf(elemIfExist.get());
             this.element.get(index).plusQuantity(element.getQuantity());
             this.fullPrice = this.fullPrice.add(element.getPrice());
@@ -69,7 +69,7 @@ public class Order implements Serializable {
 
     public void deleteElement(Product product) {
         Optional<OrderElement> elemIfExist = this.element.stream().filter(elem -> elem.getProduct().equals(product)).findFirst();
-        if (!elemIfExist.isEmpty()) {
+        if (elemIfExist.isPresent()) {
             this.fullPrice = this.fullPrice.subtract(elemIfExist.get().getPrice());
             this.element.remove(elemIfExist.get());
         }
