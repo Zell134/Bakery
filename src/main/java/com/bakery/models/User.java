@@ -1,5 +1,6 @@
 package com.bakery.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collection;
 import java.util.Set;
 import javax.persistence.CollectionTable;
@@ -106,4 +107,5 @@ public class User implements UserDetails {
         this.phone = phone;
         this.roles = roles;
     }   
+
 }

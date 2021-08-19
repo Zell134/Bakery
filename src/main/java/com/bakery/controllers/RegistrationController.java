@@ -58,7 +58,7 @@ public class RegistrationController {
             bindingResult.addError(new FieldError("confirm", "confirm", "Пароли должны совпадать!"));
             return "registration";
         }
-        User user = userService.addUser(form, origin);
+        User user = userService.addUser(form.toUser(), origin);
         if (user == null) {
             bindingResult.addError(new FieldError("email", "email", "Пользователь с такой электронной почтой уже существует!"));
             return "registration";

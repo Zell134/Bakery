@@ -8,12 +8,14 @@ spring:
             ddl-auto: validate
         show-sql: false
         generate-ddl: true
-    mail:
-        host: smtp.mail.ru
-        username: mailzell@inbox.ru
-        password: ZellRus34
-        port: 465
-        protocol: smtps
+    application:
+        name: bakery
+#    mail:
+#        host: smtp.mail.ru
+#        username: mailzell@inbox.ru
+#        password: ZellRus34
+#        port: 465
+#        protocol: smtps
     session:
         jdbc:
             initialize-schema: always
@@ -21,9 +23,15 @@ spring:
     flyway:
         enabled: true
         baseline-on-migrate: true
-mail:
-    gebug: true
-        
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka
+    instance:
+        lease-renewal-interval-in-seconds: 2
+#mail:
+#    gebug: true
+       
 bakery:
     title: my bakery
     host: http://3.8.157.121

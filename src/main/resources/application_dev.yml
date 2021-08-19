@@ -1,3 +1,5 @@
+#--spring.config.location=classpath:application_dev.yml
+
 spring:
     datasource:
         #url: jdbc:postgresql://localhost:5432/bakery
@@ -22,6 +24,9 @@ spring:
     flyway:
         enabled: true
         baseline-on-migrate: true
+    application:
+        name: bakery
+       
 mail:
     gebug: true
         

@@ -14,7 +14,6 @@ public class AllErrorsController implements ErrorController{
     }
     
 
-    @Override
     public String getErrorPath() {
         return null;
     }

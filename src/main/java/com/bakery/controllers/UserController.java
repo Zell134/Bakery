@@ -1,6 +1,5 @@
 package com.bakery.controllers;
 
-import com.bakery.data.UserRepository;
 import com.bakery.models.Role;
 import com.bakery.models.User;
 import javax.validation.Valid;
@@ -12,14 +11,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.bakery.data.UserRepository123;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserRepository123 userRepository;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository123 userRepository) {
         this.userRepository = userRepository;
     }
 

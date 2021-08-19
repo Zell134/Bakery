@@ -24,13 +24,13 @@ public class OrderService {
 
     private final OrderRepository orderRepo;
     private final OrderElementRepository orderElemRepo;
-    private final MailSender mailSender;
+    private final MailSenderService mailSender;
     private final TypeRepository typeRepo;
     @Value("${spring.mail.username}")
     private String mailToOrders;
 
     @Autowired
-    public OrderService(OrderRepository orderRepo, OrderElementRepository orderElemRepo, MailSender mailSender, TypeRepository typeRepo) {
+    public OrderService(OrderRepository orderRepo, OrderElementRepository orderElemRepo, MailSenderService mailSender, TypeRepository typeRepo) {
         this.orderRepo = orderRepo;
         this.orderElemRepo = orderElemRepo;
         this.mailSender = mailSender;

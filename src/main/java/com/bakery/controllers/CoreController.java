@@ -54,7 +54,7 @@ public class CoreController {
             model.addAttribute("user", changedUser);
             return "profile";
         }
-        userService.uppdateUser(user, changedUser);
+        userService.uppdateUser(user.getEmail(), changedUser);
 
         return "redirect:/catalog";
     }
