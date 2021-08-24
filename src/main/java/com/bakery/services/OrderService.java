@@ -1,10 +1,11 @@
-package com.bakery.service;
+package com.bakery.services;
 
 import com.bakery.data.OrderElementRepository;
 import com.bakery.data.OrderRepository;
 import com.bakery.data.TypeRepository;
 import com.bakery.models.Order;
 import com.bakery.models.OrderElement;
+import com.bakery.models.OrderToSend;
 import com.bakery.models.Product;
 import com.bakery.models.User;
 import java.time.LocalDate;
@@ -17,10 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrderService {
+    
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     private final OrderRepository orderRepo;
     private final OrderElementRepository orderElemRepo;
@@ -30,7 +35,11 @@ public class OrderService {
     private String mailToOrders;
 
     @Autowired
-    public OrderService(OrderRepository orderRepo, OrderElementRepository orderElemRepo, MailSender mailSender, TypeRepository typeRepo) {
+    public OrderService(OrderRepository orderRepo, 
+            OrderElementRepository orderElemRepo, 
+            MailSender mailSender, 
+            TypeRepository typeRepo
+    ) {
         this.orderRepo = orderRepo;
         this.orderElemRepo = orderElemRepo;
         this.mailSender = mailSender;
@@ -83,6 +92,7 @@ public class OrderService {
         order.setDestination(parameterMap.get("destination")[0]);
         order.setWishes(parameterMap.get("wishes")[0]);
         order.setOrderDate(LocalDateTime.now());
+        order.setNew(true);
         order.setId(0);
 
         sendMail(orderRepo.save(order));
@@ -106,7 +116,10 @@ public class OrderService {
         мessage += "Контактное лицо - " + order.getUser().getUsername() + "\n";
         мessage += "Телефон - " + order.getUser().getPhone() + "\n";
 
-        mailSender.send(mailToOrders, "Заказ № " + order.getId(), мessage);
+        OrderToSend orderToSend = new OrderToSend();
+        orderToSend.convertFromOrder(order);
+        messagingTemplate.convertAndSend("/orders/new", orderToSend);
+//        mailSender.send(mailToOrders, "Заказ № " + order.getId(), мessage);
         mailSender.send(order.getUser().getEmail(), "Заказ № " + order.getId(), мessage);
     }
 

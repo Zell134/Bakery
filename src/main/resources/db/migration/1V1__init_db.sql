@@ -14,6 +14,7 @@ create table if not exists orders (
     order_date timestamp, 
     wishes varchar(255), 
     user_id int8, 
+    is_new boolean not null,
     primary key (id)
 );
 

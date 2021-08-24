@@ -1,4 +1,4 @@
-package com.bakery.service;
+package com.bakery.services;
 
 import com.bakery.data.UserRepository;
 import com.bakery.models.User;

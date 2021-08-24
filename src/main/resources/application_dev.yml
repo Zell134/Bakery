@@ -1,3 +1,5 @@
+# --spring.config.location=classpath:application_dev.yml
+
 spring:
     datasource:
         #url: jdbc:postgresql://localhost:5432/bakery
@@ -22,6 +24,11 @@ spring:
     flyway:
         enabled: true
         baseline-on-migrate: true
+    rabbitmq:
+        host: 3.8.121.161
+        port: 5672
+        username: springUser
+        password: CG56XNLI4PKxUBeIv611CEJC9GzXHSdHmFLP34kz
 mail:
     gebug: true
         
@@ -36,5 +43,9 @@ upload:
 server:
     error:
         path: /error
-    
+app:
+    rabbit:
+        topicExchangeName: bakery-kitchen
+        queueName: orders
+        routingKey: orders
     

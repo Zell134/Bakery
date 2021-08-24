@@ -1,4 +1,4 @@
-package com.bakery.service;
+package com.bakery.services;
 
 import java.util.Properties;
 import javax.mail.Authenticator;
@@ -37,7 +37,11 @@ public class MailSender {
             }
         });
         Thread thread = new Thread(() -> {
-            mailSender.send(mailMessage);
+            try {
+                mailSender.send(mailMessage);
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+            }
         });
         thread.start();
     }

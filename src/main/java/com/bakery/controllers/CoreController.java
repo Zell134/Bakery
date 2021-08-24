@@ -1,7 +1,7 @@
 package com.bakery.controllers;
 
 import com.bakery.models.User;
-import com.bakery.service.UserService;
+import com.bakery.services.UserService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

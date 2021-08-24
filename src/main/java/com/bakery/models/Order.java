@@ -41,6 +41,8 @@ public class Order implements Serializable {
     private BigDecimal fullPrice;
 
     private String destination;
+    
+    private boolean isNew;
 
     String wishes;
 

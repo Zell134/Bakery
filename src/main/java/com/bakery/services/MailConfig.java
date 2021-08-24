@@ -1,4 +1,4 @@
-package com.bakery.service;
+package com.bakery.services;
 
 import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;

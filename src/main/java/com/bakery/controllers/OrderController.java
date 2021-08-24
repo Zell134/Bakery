@@ -3,7 +3,7 @@ package com.bakery.controllers;
 import com.bakery.models.Order;
 import com.bakery.models.Product;
 import com.bakery.models.User;
-import com.bakery.service.OrderService;
+import com.bakery.services.OrderService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

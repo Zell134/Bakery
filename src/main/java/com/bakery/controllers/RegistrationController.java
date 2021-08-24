@@ -2,7 +2,7 @@ package com.bakery.controllers;
 
 import com.bakery.models.User;
 import com.bakery.models.RegistrationForm;
-import com.bakery.service.UserService;
+import com.bakery.services.UserService;
 import java.net.UnknownHostException;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;

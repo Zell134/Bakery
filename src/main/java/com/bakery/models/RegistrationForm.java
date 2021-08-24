@@ -15,6 +15,7 @@ public class RegistrationForm extends User {
         public User toUser(PasswordEncoder passwordEncoder) {
         Set<Role> roles = new HashSet<>();
         roles.add(Role.USER);
+        setRoles(roles);
         return new User(getUsername(),
                 passwordEncoder.encode(getPassword()),
                 getEmail(),

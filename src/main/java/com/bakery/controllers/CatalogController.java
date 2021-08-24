@@ -3,7 +3,7 @@ package com.bakery.controllers;
 import com.bakery.models.Order;
 import com.bakery.models.Product;
 import com.bakery.models.Type;
-import com.bakery.service.CatalogService;
+import com.bakery.services.CatalogService;
 import java.io.IOException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
