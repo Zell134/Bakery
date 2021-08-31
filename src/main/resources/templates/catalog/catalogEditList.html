@@ -34,7 +34,7 @@
                             <td></td>
                         </tr>
 
-                        <tr class="table-row table-row" th:each= "prod : ${Attr__${type.getId()}__}" th:onclick="|window.location='/catalog/admin/edit/${prod.getId()}'|">
+                        <tr class="table-row" th:each= "prod : ${Attr__${type.getId()}__}" th:onclick="|window.location='/catalog/admin/edit/${prod.getId()}'|">
                             <td th:text="${prod.name}"></td>
                             <td th:text="${prod.price}"></td>
                             <td th:text="${prod.active} ? 'Да' : 'Нет'"></td>

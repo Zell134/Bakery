@@ -11,7 +11,7 @@
     <body>
         <div th:insert="menu/topMenu.html"/>
         <div class="container">   
-            <h1 th:if="${product.name}!=null" th:text="${product.name}"></h1></br>
+            <h1 th:if="${product.name}!=null" th:text="${product.name}"></h1><br/>
 
             <form method="POST" th:action="@{/catalog/admin/edit}" th:object="${product}" enctype="multipart/form-data">
 

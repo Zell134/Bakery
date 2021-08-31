@@ -11,7 +11,7 @@
     <body>
         <div th:insert="menu/topMenu.html"/>
         <div class="container">   
-            <h1>Профиль пользователя</h1>
+            <h1 id="name">Профиль пользователя</h1>
             <img th:src="@{/img.jpeg}"/>
 
             <form method="POST" th:action="@{/profile}" th:object="${user}">
@@ -83,7 +83,7 @@
                         <label for="email">Email: </label> 
                     </div>
                     <div class="col-md-4">
-                        <input class="form-control" type="text" name="email" th:field="*{email}"disabled/><br/>
+                        <input class="form-control" type="text" name="email" th:field="*{email}" disabled="disabled"/><br/>
                     </div>
                 </div>
                 <input type="hidden" name="email" th:field="*{email}"/>

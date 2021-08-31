@@ -21,7 +21,7 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="/catalog">Весь каталог</a></li>
                     <div th:each="type : ${types}">
-                        <li><a class="dropdown-item" th:href="@{/catalog/__${type.id}__}">[[${type.name}]]</a></li>
+                        <li th:id="${type.name}"><a class="dropdown-item" th:href="@{/catalog/__${type.id}__}">[[${type.name}]]</a></li>
                     </div>
                 </ul>
             </div>
@@ -31,7 +31,7 @@
 
                 <div th:if="${Attr__${type.id}__} != null">
 
-                    <h3 th:text="${type.name}"> type </h3>
+                    <h3 class = "types" th:text="${type.name}"> type </h3>
 
                     <div class="row row-cols-1 row-cols-md-3 g-4">
 
@@ -39,17 +39,17 @@
 
                             <div th:if="${product.active}" class="col">
                                 <div class="card product_card" style="width: 90%;">
-                                    
+
                                     <a class="a-card" th:href="@{/catalog/info/__${product.id}__}"></a>
-                                    
+
                                     <div class="card-header">
                                         <p class="product_name" th:text="${product.name}"/>
                                     </div>
-                                    
+
                                     <div th:if="${product.imageUrl != ''}">
                                         <img  class="card-img-top" th:src="@{/img/__${product.imageUrl}__}"/>
                                     </div>
-                                    
+
                                     <p class="card-text" th:text="${product.description}"/>
 
 
@@ -64,6 +64,6 @@
                     </div>
                 </div>    
             </div>            
-        </div></br><br/><br/>
+        </div><br/><br/><br/>
     </body>
 </html>

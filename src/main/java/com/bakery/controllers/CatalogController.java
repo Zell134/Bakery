@@ -77,7 +77,6 @@ public class CatalogController {
 
     @GetMapping("/admin/activate/{id}")
     public String productActivate(@PathVariable("id") Product product, Model model) {
-        System.out.println(product);
         service.activate(product);
         model = service.setModeltWithTypes(model, -1, false);
         return "catalog/catalogEditList";

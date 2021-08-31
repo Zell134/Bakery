@@ -1,12 +1,13 @@
+# --spring.config.location=classpath:application_dev.yml
 spring:
     datasource:
-        url: jdbc:postgresql://localhost:5432/bakery
+        url: jdbc:postgresql://localhost:5432/BakeryTest
         username: postgres
         password: postgresql
     jpa:
         hibernate:
             ddl-auto: validate
-        show-sql: false
+        show-sql: true
         generate-ddl: true
     mail:
         host: smtp.mail.ru
@@ -26,13 +27,13 @@ mail:
         
 bakery:
     title: my bakery
-    host: http://3.8.157.121
-#    host: 192.168.34.63:8080
+    host: 192.168.34.63:8080
     
 upload:
-    path: img
-    #path: src\\main\\resources\\static\\images
+    #path: img
+    path: src\\main\\resources\\static\\img
     
 server:
     error:
         path: /error
+    
