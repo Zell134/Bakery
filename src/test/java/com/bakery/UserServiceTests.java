@@ -20,7 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("test")   
 @Sql(value = {"/sqlScripts/createUserAfter.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class UserServiceTests {
 
